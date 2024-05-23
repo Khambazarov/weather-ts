@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 2px solid red; */
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  background-color: #00b7ff;
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(3rem, 1fr) repeat(10, 3rem);
+  grid-template-areas:
+    "location"
+    "condition"
+    "temperature"
+    "temp-feels-like"
+    "max-temp"
+    "min-temp"
+    "wind"
+    "humidity"
+    "sunrise"
+    "sunset"
+    "form"
+    "footer";
+}
+
+h1 {
+  padding-top: 2rem;
+}
+
+form {
+  display: flex;
+  width: 100vw;
+
+  input {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: none;
+    width: 70%;
+    text-align: center;
+    font-weight: bold;
+    caret-color: firebrick;
+
+    &::placeholder {
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+    background-color: firebrick;
+    color: #fff;
+    font-weight: 900;
+    letter-spacing: 2px;
+    width: 30%;
+  }
+}
