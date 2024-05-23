@@ -3,11 +3,11 @@ import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
 interface WeatherData {
-  location?: {
-    name? : string;
+  location: {
+    name: string;
   };
-  current?: {
-    condition?: {
+  current: {
+    condition: {
       text: string;
     };
     temp_c: number;
@@ -15,13 +15,13 @@ interface WeatherData {
     wind_kph: number;
     humidity: number;
   };
-  forecast?: {
-    forecastday?: {
-      day?: {
+  forecast: {
+    forecastday: {
+      day: {
         maxtemp_c: number;
         mintemp_c: number;
       };
-      astro?: {
+      astro: {
         sunrise: string;
         sunset: string;
       };
@@ -30,10 +30,10 @@ interface WeatherData {
 }
 
 function App() {
-  const [city, setCity] = useState<WeatherData>();
+  const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
-  
-  const inputRef = useRef<HTMLInputElement>();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,84 +52,57 @@ function App() {
       }
     };
     fetchData();
+    // abort signal
   }, [city]);
 
-  const LOCATION = !city
-    ? "Location"
-    : city
-    // : `${city.charAt(0).toUpperCase() + city.slice(1)}`;
+  const LOCATION = data?.location.name ?? "Location";
+  const CONDITION = data?.current.condition.text ?? "Condition";
+  const WIND_KPH = `Wind: ${data?.current.wind_kph ?? ""} kph`;
+  const HUMIDITY = `Humidity: ${data?.current.humidity ?? ""}%`;
+  const SUNRISE = data?.forecast.forecastday
+    ? `Sunrise: ${data.forecast.forecastday.map((i) => i.astro.sunrise)}`
+    : "Sunrise";
+  const SUNSET = data?.forecast.forecastday
+    ? `Sunset: ${data.forecast.forecastday.map((i) => i.astro.sunrise)}`
+    : "Sunset";
 
-  const CONDITION = !data
-    ? "Condition"
-    : `Condition: ${data?.current?.condition?.text}`;
+  const TEMPERATURE =
+    data?.current.temp_c === undefined
+      ? "Tempreture"
+      : `Temp: ${data.current.temp_c > 0 ? "+" : ""}${data.current.temp_c}c°`;
 
-  const TEMPERATURE = !data
-    ? "Temperature"
-    : data?.current?.temp_c > 0
-    ? `Temp: +${data?.current?.temp_c} c°`
-    : data?.current?.temp_c < 0
-    ? `Temp: -${data?.current?.temp_c} c°`
-    : `Temp: ${data?.current?.temp_c} c°`;
+  const TEMP_FEELS_LIKE =
+    data?.current.feelslike_c === undefined
+      ? "Temperature feels like"
+      : `Feels like: ${
+          Math.round(data.current.feelslike_c) > 0 ? "+" : ""
+        }${Math.round(data.current.feelslike_c)}c°`;
 
-  const TEMP_FEELS_LIKE = !data
-    ? "Temperature feels like"
-    : Math.round(data?.current?.feelslike_c) > 0
-    ? `Feels like: +${Math.round(data?.current?.feelslike_c)} c°`
-    : Math.round(data?.current?.feelslike_c) < 0
-    ? `Feels like: -${Math.round(data?.current?.feelslike_c)} c°`
-    : `Feels like: ${Math.round(data?.current?.feelslike_c)} c°`;
+  const TEMP_MAX =
+    data?.forecast.forecastday === undefined
+      ? "Max Temperature"
+      : `Max-Temp: ${data.forecast.forecastday.map((i) =>
+          Math.round(i.day.maxtemp_c) > 0 ? "+" : ""
+        )}${data.forecast.forecastday.map((i) =>
+          Math.round(i.day.maxtemp_c)
+        )}c°`;
 
-  const TEMP_MAX = !data
-    ? "Max Temperature"
-    : data?.forecast?.forecastday?.map((i) => i?.day?.maxtemp_c) > 0
-    ? `Max Temp: +${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.maxtemp_c)
-      )} c°`
-    : data?.forecast?.forecastday?.map((i) => i?.day?.maxtemp_c) < 0
-    ? `Max Temp: -${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.maxtemp_c)
-      )} c°`
-    : `Max Temp: ${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.maxtemp_c)
-      )} c°`;
+  const TEMP_MIN =
+    data?.forecast.forecastday === undefined
+      ? "Min Temperature"
+      : `Min-Temp: ${data.forecast.forecastday.map((i) =>
+          Math.round(i.day.mintemp_c) > 0 ? "+" : ""
+        )}${data.forecast.forecastday.map((i) =>
+          Math.round(i.day.mintemp_c)
+        )}c°`;
 
-  const TEMP_MIN = !data
-    ? "Min Temperature"
-    : data?.forecast?.forecastday?.map((i) => i?.day?.mintemp_c) > 0
-    ? `Min Temp: +${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.mintemp_c)
-      )} c°`
-    : data?.forecast?.forecastday?.map((i) => i?.day?.mintemp_c) < 0
-    ? `Min Temp: -${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.mintemp_c)
-      )} c°`
-    : `Min Temp: ${data?.forecast?.forecastday?.map((i) =>
-        Math.round(i?.day?.mintemp_c)
-      )} c°`;
-
-  const WIND_KPH = !data
-    ? "Wind"
-    : `Wind: ${Math.round(data?.current?.wind_kph)} kph`;
-
-  const HUMIDITY = !data
-    ? "Humidity"
-    : `Humidity: ${Math.round(data?.current?.humidity)}%`;
-
-  const SUNRISE = !data
-    ? "Sunrise"
-    : `Sunrise: ${data?.forecast?.forecastday?.map((i) => i?.astro?.sunrise)}`;
-
-  const SUNSET = !data
-    ? "Sunset"
-    : `Sunset: ${data?.forecast?.forecastday?.map((i) => i?.astro?.sunset)}`;
-
-const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const cityValue = inputRef.current?.value;
-  if (cityValue) {
-    setCity(cityValue);
-  }
-};
+  const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const cityValue = inputRef.current?.value;
+    if (cityValue) {
+      setCity(cityValue);
+    }
+  };
 
   return (
     <div className="container">
@@ -146,7 +119,7 @@ const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
       <form onSubmit={inputCity}>
         <input
           type="text"
-          placeholder="Type a Location"
+          placeholder="Location"
           id="name"
           name="name"
           required
