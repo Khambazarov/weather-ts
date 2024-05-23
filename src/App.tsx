@@ -63,7 +63,7 @@ function App() {
     ? `Sunrise: ${data.forecast.forecastday.map((i) => i.astro.sunrise)}`
     : "Sunrise";
   const SUNSET = data?.forecast.forecastday
-    ? `Sunset: ${data.forecast.forecastday.map((i) => i.astro.sunrise)}`
+    ? `Sunset: ${data.forecast.forecastday.map((i) => i.astro.sunset)}`
     : "Sunset";
 
   const TEMPERATURE =
