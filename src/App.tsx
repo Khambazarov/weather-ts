@@ -5,18 +5,22 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 interface WeatherData {
   location: {
     name: string;
+    country: string;
   };
   current: {
     condition: {
       text: string;
+      icon: string;
     };
     temp_c: number;
     feelslike_c: number;
     wind_kph: number;
+    wind_dir: string;
     humidity: number;
   };
   forecast: {
     forecastday: {
+      // date: string;
       day: {
         maxtemp_c: number;
         mintemp_c: number;
@@ -24,6 +28,11 @@ interface WeatherData {
       astro: {
         sunrise: string;
         sunset: string;
+        moonrise: string;
+        moonset: string;
+      };
+      hour: {
+        time: string;
       };
     }[];
   };
@@ -55,48 +64,53 @@ function App() {
     // abort signal
   }, [city]);
 
-  const LOCATION = data?.location.name ?? "Location";
-  const CONDITION = data?.current.condition.text ?? "Condition";
-  const WIND_KPH = `Wind: ${data?.current.wind_kph ?? ""} kph`;
-  const HUMIDITY = `Humidity: ${data?.current.humidity ?? ""}%`;
-  const SUNRISE = data?.forecast.forecastday
-    ? `Sunrise: ${data.forecast.forecastday.map((i) => i.astro.sunrise)}`
-    : "Sunrise";
-  const SUNSET = data?.forecast.forecastday
-    ? `Sunset: ${data.forecast.forecastday.map((i) => i.astro.sunset)}`
-    : "Sunset";
+  const LOCATION = data?.location.name;
 
-  const TEMPERATURE =
-    data?.current.temp_c === undefined
-      ? "Tempreture"
-      : `Temp: ${data.current.temp_c > 0 ? "+" : ""}${Math.round(
-          data.current.temp_c
-        )}c°`;
+  const COUNTRY = data?.location.country;
 
-  const TEMP_FEELS_LIKE =
-    data?.current.feelslike_c === undefined
-      ? "Temperature feels like"
-      : `Feels like: ${data.current.feelslike_c > 0 ? "+" : ""}${Math.round(
-          data.current.feelslike_c
-        )}c°`;
+  const CONDITION = data?.current.condition.text;
 
-  const TEMP_MAX =
-    data?.forecast.forecastday === undefined
-      ? "Max Temperature"
-      : `Max-Temp: ${data.forecast.forecastday.map((i) =>
-          i.day.maxtemp_c > 0 ? "+" : ""
-        )}${data.forecast.forecastday.map((i) =>
-          Math.round(i.day.maxtemp_c)
-        )}c°`;
+  const ICON = data && `https:${data?.current.condition.icon}`;
+
+  const SUN_ICON =
+    data && `https://cdn.weatherapi.com/weather/64x64/day/113.png`;
+
+  const TEMPERATURE = data && `Temp: ${Math.round(data.current.temp_c)}c°`;
+
+  const PERCEIVED_TEMP =
+    data && `Perceived Temp: ${Math.round(data.current.feelslike_c)}c°`;
 
   const TEMP_MIN =
-    data?.forecast.forecastday === undefined
-      ? "Min Temperature"
-      : `Min-Temp: ${data.forecast.forecastday.map((i) =>
-          i.day.mintemp_c > 0 ? "+" : ""
-        )}${data.forecast.forecastday.map((i) =>
-          Math.round(i.day.mintemp_c)
-        )}c°`;
+    data &&
+    `${data?.forecast.forecastday.map((i) =>
+      Math.round(i.day.mintemp_c)
+    )}c° – `;
+
+  const TEMP_MAX =
+    data &&
+    `${data?.forecast.forecastday.map((i) => Math.round(i.day.maxtemp_c))}c°`;
+
+  const WIND_KPH = data && `Wind: ${data?.current.wind_kph ?? ""} kph`;
+
+  const WIND_DIR = data && `Wind Direction: ${data?.current.wind_dir}`;
+
+  const HUMIDITY = data && `Humidity: ${data?.current.humidity ?? ""}%`;
+
+  const SUNRISE =
+    data && `${data?.forecast.forecastday.map((i) => i.astro.sunrise)} – `;
+
+  const SUNSET = data && data?.forecast.forecastday.map((i) => i.astro.sunset);
+
+  const MOONRISE =
+    data && `${data?.forecast.forecastday.map((i) => i.astro.moonrise)} – `;
+
+  const MOONSET =
+    data && data?.forecast.forecastday.map((i) => i.astro.moonset);
+
+  // const HOURS =
+  //   data && data?.forecast.forecastday.map((i) => i.hour).map((h) => h.time);
+
+  // console.log("HOURS:", HOURS);
 
   const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -109,16 +123,31 @@ function App() {
   return (
     <div className="container">
       <h1 className="location">{LOCATION}</h1>
-      <div className="condition">{CONDITION}</div>
+      <h2 className="country">{COUNTRY}</h2>
+      <div className="condition">
+        {CONDITION}
+        <img src={ICON} alt="" />
+      </div>
       <div className="temperature">{TEMPERATURE}</div>
-      <div className="temp-feelslike">{TEMP_FEELS_LIKE}</div>
-      <div className="temperature">{TEMP_MAX}</div>
-      <div className="temperature">{TEMP_MIN}</div>
+      <div className="perseived">{PERCEIVED_TEMP}</div>
+      <div className="temp-min-max">
+        {TEMP_MIN}
+        {TEMP_MAX}
+      </div>
       <div className="wind-speed">{WIND_KPH}</div>
+      <div className="wind-dir">{WIND_DIR}</div>
       <div className="air-humidity">{HUMIDITY}</div>
-      <div className="condition">{SUNRISE}</div>
-      <div className="condition">{SUNSET}</div>
-      <form onSubmit={inputCity}>
+      <div className="sunrise-sunset">
+        <img src={SUN_ICON} />
+        {SUNRISE}
+        {SUNSET}
+      </div>
+      <div className="moonrise-moonset">
+        {MOONRISE}
+        {MOONSET}
+      </div>
+      {/* <div className="hours">{HOURS}</div> */}
+      <form className="form" onSubmit={inputCity}>
         <input
           type="text"
           placeholder="Location"
