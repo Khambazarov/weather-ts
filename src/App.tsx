@@ -69,20 +69,22 @@ function App() {
   const TEMPERATURE =
     data?.current.temp_c === undefined
       ? "Tempreture"
-      : `Temp: ${data.current.temp_c > 0 ? "+" : ""}${data.current.temp_c}c°`;
+      : `Temp: ${data.current.temp_c > 0 ? "+" : ""}${Math.round(
+          data.current.temp_c
+        )}c°`;
 
   const TEMP_FEELS_LIKE =
     data?.current.feelslike_c === undefined
       ? "Temperature feels like"
-      : `Feels like: ${
-          Math.round(data.current.feelslike_c) > 0 ? "+" : ""
-        }${Math.round(data.current.feelslike_c)}c°`;
+      : `Feels like: ${data.current.feelslike_c > 0 ? "+" : ""}${Math.round(
+          data.current.feelslike_c
+        )}c°`;
 
   const TEMP_MAX =
     data?.forecast.forecastday === undefined
       ? "Max Temperature"
       : `Max-Temp: ${data.forecast.forecastday.map((i) =>
-          Math.round(i.day.maxtemp_c) > 0 ? "+" : ""
+          i.day.maxtemp_c > 0 ? "+" : ""
         )}${data.forecast.forecastday.map((i) =>
           Math.round(i.day.maxtemp_c)
         )}c°`;
@@ -91,7 +93,7 @@ function App() {
     data?.forecast.forecastday === undefined
       ? "Min Temperature"
       : `Min-Temp: ${data.forecast.forecastday.map((i) =>
-          Math.round(i.day.mintemp_c) > 0 ? "+" : ""
+          i.day.mintemp_c > 0 ? "+" : ""
         )}${data.forecast.forecastday.map((i) =>
           Math.round(i.day.mintemp_c)
         )}c°`;
