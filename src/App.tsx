@@ -64,12 +64,12 @@ function App() {
         (position) => {
           const { latitude, longitude } = position.coords;
           fetchData(`${latitude},${longitude}`);
-          setInitialized(true);
+          setInitialized((prev) => !prev);
         },
         (error) => {
           console.error("Error:", error);
           fetchData("Berlin");
-          setInitialized(true);
+          setInitialized((prev) => !prev);
         }
       );
     } else if (city) {
