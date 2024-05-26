@@ -37,10 +37,10 @@ interface WeatherData {
   };
 }
 
-function App() {
+const App = () => {
+  const [initialized, setInitialized] = useState(false);
   const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
-  const [initialized, setInitialized] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -75,7 +75,7 @@ function App() {
     } else if (city) {
       fetchData(city);
     }
-  }, [city, initialized]);
+  }, [initialized, city]);
 
   const LOCATION = data?.location.name;
 
@@ -162,7 +162,7 @@ function App() {
           <div className="perseived">{PERCEIVED_TEMP}</div>
           <div className="temp-min-max">
             {TEMP_MIN}
-            {TEMP_MAX}
+            {TEMP_MAX} initialized: boolean;
           </div>
           <div className="wind-speed">{WIND_KPH}</div>
           <div className="wind-dir">{WIND_DIR}</div>
@@ -183,6 +183,6 @@ function App() {
       </form>
     </div>
   );
-}
+};
 
 export default App;
