@@ -68,6 +68,7 @@ function App() {
         },
         (error) => {
           console.error("Error:", error);
+          fetchData("Berlin");
           setInitialized(true);
         }
       );
