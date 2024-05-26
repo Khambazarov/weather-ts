@@ -40,6 +40,7 @@ interface WeatherData {
 function App() {
   const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
+  const [initialized, setInitialized] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,16 +58,23 @@ function App() {
         console.error("Error:", error);
       }
     };
-    
-    navigator.geolocation.getCurrentPosition((position) => {
-      const { latitude, longitude } = position.coords;
-      fetchData(`${latitude},${longitude}`);
-    });
 
-    if (city) {
+    if (!initialized) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchData(`${latitude},${longitude}`);
+          setInitialized(true);
+        },
+        (error) => {
+          console.error("Error:", error);
+          setInitialized(true);
+        }
+      );
+    } else if (city) {
       fetchData(city);
     }
-  }, [city]);
+  }, [city, initialized]);
 
   const LOCATION = data?.location.name;
 
