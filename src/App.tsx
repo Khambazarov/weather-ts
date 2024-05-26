@@ -162,7 +162,7 @@ const App = () => {
           <div className="perseived">{PERCEIVED_TEMP}</div>
           <div className="temp-min-max">
             {TEMP_MIN}
-            {TEMP_MAX} initialized: boolean;
+            {TEMP_MAX}
           </div>
           <div className="wind-speed">{WIND_KPH}</div>
           <div className="wind-dir">{WIND_DIR}</div>
