@@ -68,7 +68,7 @@ function App() {
         },
         (error) => {
           console.error("Error:", error);
-          fetchData("Berlin");
+          fetchData("Sydney");
           setInitialized((prev) => !prev);
         }
       );
