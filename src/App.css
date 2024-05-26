@@ -23,12 +23,13 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows:
-   3rem 3rem 1fr repeat(8, 2.5rem) 
-   /* minmax(3rem 1fr) */
+    3rem 2rem 1fr 1fr repeat(6, 2.5rem)
     3rem;
   grid-template-areas:
     "location"
     "country"
+    /* "local-time" */
+    "sunrise-sunset"
     "condition"
     "temperature"
     "perseived-temp"
@@ -36,41 +37,48 @@ body {
     "wind-speed"
     "wind-dir"
     "air-humidity"
-    "sunrise-sunset"
-    "moonrise-moonset"
-    /* "hours" */
     "form";
 }
 
 .location {
   grid-area: location;
-  padding-top: 1rem;
+  padding-top: 0.5rem;
   font-size: 2rem;
 }
 
 .country {
   grid-area: country;
-  padding-top: 0.5rem;
   font-size: 1rem;
+}
+
+.local-time {
+  grid-area: local-time;
+}
+
+.sunrise-sunset {
+  grid-area: sunrise-sunset;
+  border-top: 0.25rem solid yellow;
+  border-radius: 50%;
+  padding-inline: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    align-self: start;
+  }
 }
 
 .condition {
   grid-area: condition;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
   img {
-    width: 15rem;
+    width: 10rem;
   }
-}
-
-.sunrise-sunset {
-  grid-area: sunrise-sunset;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 /* .hours {
