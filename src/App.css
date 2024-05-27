@@ -9,6 +9,7 @@
 
 body {
   font-family: "Roboto", sans-serif;
+  background-color: #000;
 }
 
 .container {
@@ -21,9 +22,10 @@ body {
   letter-spacing: 2px;
   text-align: center;
   display: grid;
+  margin-inline: auto;
   grid-template-columns: 1fr;
   grid-template-rows:
-    3rem 2rem 1fr 1fr repeat(6, 2.5rem)
+    3rem 2rem 15rem 1fr repeat(6, 2.5rem)
     3rem;
   grid-template-areas:
     "location"
@@ -38,6 +40,7 @@ body {
     "wind-dir"
     "air-humidity"
     "form";
+  max-width: 768px;
 }
 
 .location {
@@ -56,15 +59,17 @@ body {
 }
 
 .sunrise-sunset {
+  width: 15rem;
   grid-area: sunrise-sunset;
-  border-top: 0.25rem solid yellow;
+  border-top: 0.5rem solid yellow;
   border-radius: 50%;
-  padding-inline: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-inline: auto;
 
   img {
+    /* outline: 2px solid red; */
     align-self: start;
   }
 }
@@ -89,7 +94,7 @@ body {
 .form {
   grid-area: form;
   display: flex;
-  width: 100vw;
+  /* width: 100vw; */
 
   input {
     font-size: 1.25rem;
