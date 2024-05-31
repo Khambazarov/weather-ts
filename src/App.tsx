@@ -41,6 +41,9 @@ const App: FC = () => {
   const [initialized, setInitialized] = useState(false);
   const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
+  // const [currentTime, setCurrentTime] = useState(new Date());
+
+  // console.log(new Date().getHours());
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -76,7 +79,23 @@ const App: FC = () => {
     if (city) {
       fetchData(city);
     }
+
+    // const timer = setInterval(() => {
+    //   setCurrentTime(new Date());
+    // }, 1000);
+
+    // return () => {
+    //   clearInterval(timer);
+    // };
   }, [initialized, city]);
+
+  // const hours = currentTime.getHours();
+  // const hour = `${hours < 10 ? "0" + hours : hours}`;
+  // const minutes = currentTime.getMinutes();
+  // const minute = `${minutes < 10 ? "0" + minutes : minutes}`;
+  // const seconds = currentTime.getSeconds();
+  // const second = `${seconds < 10 ? "0" + seconds : seconds}`;
+  // const time = `${hour}:${minute}:${second}`;
 
   const LOCATION = data?.location.name;
   const LOCAL_TIME = data?.location.localtime.split(" ")[1];
@@ -120,15 +139,44 @@ const App: FC = () => {
     return joinTime;
   };
 
+  const sunriseTimeConvertToNumber = () => {
+    const timeSplitting =
+      data &&
+      data?.forecast.forecastday
+        .map((i) => i.astro.sunrise)
+        .join("")
+        .split(" ")[0];
+    const getMinuts = timeSplitting?.split(":")[1];
+    const convertHourTo24 =
+      Number(timeSplitting?.split(":")[0]) * 60 + Number(getMinuts);
+    return convertHourTo24;
+  };
+
+  // const sunsetTimeConvertToNumber = () => {
+  //   const timeSplitting =
+  //     data &&
+  //     data?.forecast.forecastday
+  //       .map((i) => i.astro.sunset)
+  //       .join("")
+  //       .split(" ")[0];
+  //   const getMinuts = timeSplitting?.split(":")[1];
+  //   const convertHourTo24 =
+  //     (Number(timeSplitting?.split(":")[0]) + 12) * 60 + Number(getMinuts);
+  //   return convertHourTo24;
+  // };
+
+  // TOKYO:   1717174995  LOCAL:  2024-06-01 02:03   DATE: 31 May 2024 17:03:47 GMT"
+  // IST:     1717175069  LOCAL:  2024-05-31 20:04   DATE: 31 May 2024 17:03:47 GMT"
+
   const calculateSunAngle = () => {
     const DAY = 24 * 60;
-    const CIRCLE = Math.PI * 2;
+    const CIRCLE = Math.PI;
     const timeSplitting = data && data?.location.localtime.split(" ")[1];
-    const minut = Number(timeSplitting?.split(":")[1]);
-    const hour = Number(timeSplitting?.split(":")[0]) * 60 - 180; // 180 Minuten = 90deg ?? muss eine andere lösung finden!
-    const currentTimeInMinuts = hour + minut;
+    const convertedMinutes = Number(timeSplitting?.split(":")[1]);
+    const convertedHour = Number(timeSplitting?.split(":")[0]) * 60 + 180; // 180 Minuten = 90deg ?? muss andere lösung finden!
+    const currentTimeInMinuts = convertedHour + convertedMinutes;
     const result = (currentTimeInMinuts / DAY) * CIRCLE;
-    return result;
+    return result * 4;
   };
 
   const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
@@ -139,32 +187,57 @@ const App: FC = () => {
     }
   };
 
+  const localTimeConvertToNumber = () => {
+    const getMinutes = Number(LOCAL_TIME?.split(":")[1]);
+    const getHours = Number(LOCAL_TIME?.split(":")[0]);
+    return getHours * 60 + getMinutes;
+  };
+
   return (
     <div className="container">
       {data && (
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          <div
-            className="sunrise-sunset circle"
-            style={{
-              // borderColor: `red`
-            }}
-          >
-            <img
-              className="sun"
-              src={SUN_ICON}
-              style={{
-                top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
-                left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
-              }}
-            />
-            <div className="day-time">
-              <span>{SUNRISE}</span>
-              <span className="local-time">{LOCAL_TIME}</span>
-              <span>{data && sunsetConvertTo24Hours()}</span>
+          {sunriseTimeConvertToNumber > localTimeConvertToNumber ? (
+            <div
+              className="sunrise-sunset circle"
+              style={{ borderColor: "rgba(255, 223, 25, 1)" }}
+            >
+              <img
+                className="sun"
+                src={SUN_ICON}
+                style={{
+                  top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
+                  left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
+                }}
+              />
+              <div className="day-time">
+                <span>{SUNRISE}</span>
+                <span className="local-time">{LOCAL_TIME}</span>
+                <span>{data && sunsetConvertTo24Hours()}</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div
+              className="sunrise-sunset circle"
+              style={{ borderColor: "rgba(255, 223, 25, 0.5)" }}
+            >
+              <img
+                className="sun"
+                src={SUN_ICON}
+                style={{
+                  top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
+                  left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
+                }}
+              />
+              <div className="day-time">
+                <span>{SUNRISE}</span>
+                <span className="local-time">{LOCAL_TIME}</span>
+                <span>{data && sunsetConvertTo24Hours()}</span>
+              </div>
+            </div>
+          )}
           <div className="condition">
             {CONDITION}
             <img src={ICON} alt="" />
