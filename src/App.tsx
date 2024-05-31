@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, FC } from "react";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -37,7 +37,7 @@ interface WeatherData {
   };
 }
 
-const App = () => {
+const App: FC = () => {
   const [initialized, setInitialized] = useState(false);
   const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
@@ -80,7 +80,6 @@ const App = () => {
 
   const LOCATION = data?.location.name;
   const LOCAL_TIME = data?.location.localtime.split(" ")[1];
-  // const TIME_FOR_CIRCLE = data?.location.localtime;
   const COUNTRY = data?.location.country;
   const CONDITION = data?.current.condition.text;
   const ICON = data && `https:${data?.current.condition.icon}`;
@@ -122,30 +121,15 @@ const App = () => {
   };
 
   const calculateSunAngle = () => {
-    let init = 0;
-    const day = 24 * 60;
-    const circle = 360;
-    // let PI = Math.PI * 2;
+    const DAY = 24 * 60;
+    const CIRCLE = Math.PI * 2;
     const timeSplitting = data && data?.location.localtime.split(" ")[1];
     const minut = Number(timeSplitting?.split(":")[1]);
-    const hour = Number(timeSplitting?.split(":")[0]) * 60;
-    const convertedCurrentTime = hour + minut;
-    const result = (convertedCurrentTime / day) * circle;
-    init = result;
-    return init;
+    const hour = Number(timeSplitting?.split(":")[0]) * 60 - 180; // 180 Minuten = 90deg ?? muss eine andere lösung finden!
+    const currentTimeInMinuts = hour + minut;
+    const result = (currentTimeInMinuts / DAY) * CIRCLE;
+    return result;
   };
-
-  let init = 0;
-  const day = 24 * 60;
-  const circle = 360;
-  // let PI = Math.PI * 2;
-  const timeSplitting = data && data?.location.localtime.split(" ")[1];
-  const minut = Number(timeSplitting?.split(":")[1]);
-  const hour = Number(timeSplitting?.split(":")[0]) * 60;
-  const convertedCurrentTime = hour + minut;
-  const result = (convertedCurrentTime / day) * circle;
-  init = result;
-  console.log(init);
 
   const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -161,7 +145,12 @@ const App = () => {
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          <div className="sunrise-sunset circle">
+          <div
+            className="sunrise-sunset circle"
+            style={{
+              // borderColor: `red`
+            }}
+          >
             <img
               className="sun"
               src={SUN_ICON}
@@ -172,7 +161,7 @@ const App = () => {
             />
             <div className="day-time">
               <span>{SUNRISE}</span>
-              <span>{LOCAL_TIME}</span>
+              <span className="local-time">{LOCAL_TIME}</span>
               <span>{data && sunsetConvertTo24Hours()}</span>
             </div>
           </div>

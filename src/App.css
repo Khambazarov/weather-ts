@@ -65,7 +65,7 @@ body {
   justify-content: center;
   width: 16rem;
   aspect-ratio: 1;
-  border: 0.125rem solid yellow;
+  border: 2px solid yellow;
   border-radius: 50%;
   background: transparent;
   position: relative;
@@ -80,11 +80,11 @@ body {
 
 .sun {
   /* --angle-int: var(--angle); */
+  /* top: calc(50% - sin(var(--angle)) * 50% - 2rem); */
+  /* left: calc(50% - cos(var(--angle)) * 50% - 2rem); */
   position: absolute;
   display: block;
   border-radius: 50%;
-  /* top: calc(50% - 2rem - sin(var(--angle-int)) * 50%);
-  left: calc(50% - 2rem - cos(var(--angle-int)) * 50%); */
 }
 
 .day-time {
@@ -92,6 +92,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.local-time {
+  height: 12rem;
+  font-size: 2rem;
 }
 
 .condition {
