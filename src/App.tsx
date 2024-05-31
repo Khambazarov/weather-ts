@@ -6,7 +6,7 @@ interface WeatherData {
   location: {
     name: string;
     country: string;
-    // localtime: string;
+    localtime: string;
   };
   current: {
     condition: {
@@ -72,45 +72,34 @@ const App = () => {
           setInitialized(true);
         }
       );
-    } else if (city) {
+    }
+    if (city) {
       fetchData(city);
     }
   }, [initialized, city]);
 
   const LOCATION = data?.location.name;
-
-  // const LOCAL_TIME = data?.location.localtime
-
+  const LOCAL_TIME = data?.location.localtime.split(" ")[1];
+  // const TIME_FOR_CIRCLE = data?.location.localtime;
   const COUNTRY = data?.location.country;
-
   const CONDITION = data?.current.condition.text;
-
   const ICON = data && `https:${data?.current.condition.icon}`;
-
   const SUN_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/day/113.png`;
-
   const TEMPERATURE = data && `Temp: ${Math.round(data.current.temp_c)}c°`;
-
   const PERCEIVED_TEMP =
     data && `Perceived Temp: ${Math.round(data.current.feelslike_c)}c°`;
-
   const TEMP_MIN =
     data &&
     `${data?.forecast.forecastday.map((i) =>
       Math.round(i.day.mintemp_c)
     )}c° – `;
-
   const TEMP_MAX =
     data &&
     `${data?.forecast.forecastday.map((i) => Math.round(i.day.maxtemp_c))}c°`;
-
   const WIND_KPH = data && `Wind: ${data?.current.wind_kph ?? ""} kph`;
-
   const WIND_DIR = data && `Wind Direction: ${data?.current.wind_dir}`;
-
   const HUMIDITY = data && `Humidity: ${data?.current.humidity ?? ""}%`;
-
   const SUNRISE =
     data &&
     `${
@@ -119,7 +108,6 @@ const App = () => {
         .join("")
         .split(" ")[0]
     }`;
-
   const sunsetConvertTo24Hours = () => {
     const timeSplitting =
       data &&
@@ -127,12 +115,37 @@ const App = () => {
         .map((i) => i.astro.sunset)
         .join("")
         .split(" ")[0];
-
-    const convertMinuts = timeSplitting?.split(":")[1];
-    const convertHour = Number(timeSplitting?.split(":")[0]) + 12;
-    const joinTime = `${convertHour}:${convertMinuts}`;
+    const getMinuts = timeSplitting?.split(":")[1];
+    const convertHourTo24 = Number(timeSplitting?.split(":")[0]) + 12;
+    const joinTime = `${convertHourTo24}:${getMinuts}`;
     return joinTime;
   };
+
+  const calculateSunAngle = () => {
+    let init = 0;
+    const day = 24 * 60;
+    const circle = 360;
+    // let PI = Math.PI * 2;
+    const timeSplitting = data && data?.location.localtime.split(" ")[1];
+    const minut = Number(timeSplitting?.split(":")[1]);
+    const hour = Number(timeSplitting?.split(":")[0]) * 60;
+    const convertedCurrentTime = hour + minut;
+    const result = (convertedCurrentTime / day) * circle;
+    init = result;
+    return init;
+  };
+
+  let init = 0;
+  const day = 24 * 60;
+  const circle = 360;
+  // let PI = Math.PI * 2;
+  const timeSplitting = data && data?.location.localtime.split(" ")[1];
+  const minut = Number(timeSplitting?.split(":")[1]);
+  const hour = Number(timeSplitting?.split(":")[0]) * 60;
+  const convertedCurrentTime = hour + minut;
+  const result = (convertedCurrentTime / day) * circle;
+  init = result;
+  console.log(init);
 
   const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -148,11 +161,20 @@ const App = () => {
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          {/* <h2 className="local-time">{LOCAL_TIME}</h2> */}
-          <div className="sunrise-sunset">
-            {SUNRISE}
-            <img src={SUN_ICON} />
-            {data && sunsetConvertTo24Hours()}
+          <div className="sunrise-sunset circle">
+            <img
+              className="sun"
+              src={SUN_ICON}
+              style={{
+                top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
+                left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
+              }}
+            />
+            <div className="day-time">
+              <span>{SUNRISE}</span>
+              <span>{LOCAL_TIME}</span>
+              <span>{data && sunsetConvertTo24Hours()}</span>
+            </div>
           </div>
           <div className="condition">
             {CONDITION}
@@ -178,6 +200,7 @@ const App = () => {
           required
           autoFocus
           ref={inputRef}
+          autoComplete="off"
         />
         <button type="submit">Submit</button>
       </form>

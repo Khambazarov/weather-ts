@@ -4,7 +4,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* border: 2px solid red; */
 }
 
 body {
@@ -25,7 +24,7 @@ body {
   margin-inline: auto;
   grid-template-columns: 1fr;
   grid-template-rows:
-    3rem 2rem 15rem 1fr repeat(6, 2.5rem)
+    3rem 2rem 19rem 1fr repeat(6, 2.5rem)
     3rem;
   grid-template-areas:
     "location"
@@ -59,19 +58,40 @@ body {
 }
 
 .sunrise-sunset {
-  width: 15rem;
   grid-area: sunrise-sunset;
-  border-top: 0.5rem solid yellow;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16rem;
+  aspect-ratio: 1;
+  border: 0.125rem solid yellow;
   border-radius: 50%;
+  background: transparent;
+  position: relative;
+  /* --angle: 0deg; */
+}
+
+/* @property --angle-int {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+} */
+
+.sun {
+  /* --angle-int: var(--angle); */
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  /* top: calc(50% - 2rem - sin(var(--angle-int)) * 50%);
+  left: calc(50% - 2rem - cos(var(--angle-int)) * 50%); */
+}
+
+.day-time {
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-inline: auto;
-
-  img {
-    /* outline: 2px solid red; */
-    align-self: start;
-  }
 }
 
 .condition {
@@ -86,15 +106,9 @@ body {
   }
 }
 
-/* .hours {
-  grid-area: hours;
-  border: 2px solid red;
-} */
-
 .form {
   grid-area: form;
   display: flex;
-  /* width: 100vw; */
 
   input {
     font-size: 1.25rem;
