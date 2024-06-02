@@ -1,4 +1,11 @@
 import React, { useState, useEffect, useRef, FC } from "react";
+import { FiSunset, FiSunrise } from "react-icons/fi";
+import {
+  FaTemperatureArrowUp,
+  FaTemperatureHalf,
+  FaTemperatureArrowDown,
+} from "react-icons/fa6";
+import { WiHumidity } from "react-icons/wi";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -21,7 +28,6 @@ interface WeatherData {
   };
   forecast: {
     forecastday: {
-      // date: string;
       day: {
         maxtemp_c: number;
         mintemp_c: number;
@@ -41,9 +47,6 @@ const App: FC = () => {
   const [initialized, setInitialized] = useState(false);
   const [city, setCity] = useState("");
   const [data, setData] = useState<WeatherData>();
-  // const [currentTime, setCurrentTime] = useState(new Date());
-
-  // console.log(new Date().getHours());
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,7 +60,7 @@ const App: FC = () => {
         const response2 = await fetch(forecast);
         const data2 = await response2.json();
         setData({ ...data1, ...data2 });
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Error:", error);
       }
     };
@@ -69,7 +72,7 @@ const App: FC = () => {
           fetchData(`${latitude},${longitude}`);
           setInitialized(true);
         },
-        (error) => {
+        (error: unknown) => {
           console.error("Error:", error);
           fetchData("Sydney");
           setInitialized(true);
@@ -79,45 +82,27 @@ const App: FC = () => {
     if (city) {
       fetchData(city);
     }
-
-    // const timer = setInterval(() => {
-    //   setCurrentTime(new Date());
-    // }, 1000);
-
-    // return () => {
-    //   clearInterval(timer);
-    // };
   }, [initialized, city]);
 
-  // const hours = currentTime.getHours();
-  // const hour = `${hours < 10 ? "0" + hours : hours}`;
-  // const minutes = currentTime.getMinutes();
-  // const minute = `${minutes < 10 ? "0" + minutes : minutes}`;
-  // const seconds = currentTime.getSeconds();
-  // const second = `${seconds < 10 ? "0" + seconds : seconds}`;
-  // const time = `${hour}:${minute}:${second}`;
-
-  const LOCATION = data?.location.name;
+  const LOCATION = data?.location?.name;
   const LOCAL_TIME = data?.location.localtime.split(" ")[1];
   const COUNTRY = data?.location.country;
   const CONDITION = data?.current.condition.text;
   const ICON = data && `https:${data?.current.condition.icon}`;
   const SUN_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/day/113.png`;
-  const TEMPERATURE = data && `Temp: ${Math.round(data.current.temp_c)}c°`;
+  const TEMPERATURE = data && `${Math.round(data.current.temp_c)}`;
   const PERCEIVED_TEMP =
-    data && `Perceived Temp: ${Math.round(data.current.feelslike_c)}c°`;
+    data && `Perceived: ${Math.round(data.current.feelslike_c)}`;
   const TEMP_MIN =
     data &&
-    `${data?.forecast.forecastday.map((i) =>
-      Math.round(i.day.mintemp_c)
-    )}c° – `;
+    `${data?.forecast.forecastday.map((i) => Math.round(i.day.mintemp_c))} – `;
   const TEMP_MAX =
     data &&
-    `${data?.forecast.forecastday.map((i) => Math.round(i.day.maxtemp_c))}c°`;
+    `${data?.forecast.forecastday.map((i) => Math.round(i.day.maxtemp_c))}`;
   const WIND_KPH = data && `Wind: ${data?.current.wind_kph ?? ""} kph`;
   const WIND_DIR = data && `Wind Direction: ${data?.current.wind_dir}`;
-  const HUMIDITY = data && `Humidity: ${data?.current.humidity ?? ""}%`;
+  const HUMIDITY = data && `${data?.current.humidity ?? ""}`;
   const SUNRISE =
     data &&
     `${
@@ -152,31 +137,15 @@ const App: FC = () => {
     return convertHourTo24;
   };
 
-  // const sunsetTimeConvertToNumber = () => {
-  //   const timeSplitting =
-  //     data &&
-  //     data?.forecast.forecastday
-  //       .map((i) => i.astro.sunset)
-  //       .join("")
-  //       .split(" ")[0];
-  //   const getMinuts = timeSplitting?.split(":")[1];
-  //   const convertHourTo24 =
-  //     (Number(timeSplitting?.split(":")[0]) + 12) * 60 + Number(getMinuts);
-  //   return convertHourTo24;
-  // };
-
-  // TOKYO:   1717174995  LOCAL:  2024-06-01 02:03   DATE: 31 May 2024 17:03:47 GMT"
-  // IST:     1717175069  LOCAL:  2024-05-31 20:04   DATE: 31 May 2024 17:03:47 GMT"
-
   const calculateSunAngle = () => {
     const DAY = 24 * 60;
-    const CIRCLE = Math.PI;
+    const CIRCLE = Math.PI * 4;
     const timeSplitting = data && data?.location.localtime.split(" ")[1];
     const convertedMinutes = Number(timeSplitting?.split(":")[1]);
-    const convertedHour = Number(timeSplitting?.split(":")[0]) * 60 + 180; // 180 Minuten = 90deg ?? muss andere lösung finden!
+    const convertedHour = Number(timeSplitting?.split(":")[0]) * 60 + 180; // +180 Minuten = 90deg ?? muss andere lösung finden!
     const currentTimeInMinuts = convertedHour + convertedMinutes;
     const result = (currentTimeInMinuts / DAY) * CIRCLE;
-    return result * 4;
+    return result;
   };
 
   const inputCity = (e: React.FormEvent<HTMLFormElement>) => {
@@ -195,7 +164,7 @@ const App: FC = () => {
 
   return (
     <div className="container">
-      {data && (
+      {LOCATION ? (
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
@@ -213,9 +182,20 @@ const App: FC = () => {
                 }}
               />
               <div className="day-time">
-                <span>{SUNRISE}</span>
-                <span className="local-time">{LOCAL_TIME}</span>
-                <span>{data && sunsetConvertTo24Hours()}</span>
+                <div className="sun-icons-wrapper">
+                  <FiSunrise />
+                  <span>{SUNRISE}</span>
+                </div>
+                <div className="local-temp">
+                  <span className="temp">{TEMPERATURE}</span>
+                  <span>
+                    <FaTemperatureHalf />
+                  </span>
+                </div>
+                <div className="sun-icons-wrapper">
+                  <FiSunset />
+                  <span>{data && sunsetConvertTo24Hours()}</span>
+                </div>
               </div>
             </div>
           ) : (
@@ -232,9 +212,20 @@ const App: FC = () => {
                 }}
               />
               <div className="day-time">
-                <span>{SUNRISE}</span>
-                <span className="local-time">{LOCAL_TIME}</span>
-                <span>{data && sunsetConvertTo24Hours()}</span>
+                <div className="sun-icons-wrapper">
+                  <FiSunrise />
+                  <span>{SUNRISE}</span>
+                </div>
+                <div className="local-temp">
+                  <span className="temp">{TEMPERATURE}</span>
+                  <span>
+                    <FaTemperatureHalf />
+                  </span>
+                </div>
+                <div className="sun-icons-wrapper">
+                  <FiSunset />
+                  <span>{data && sunsetConvertTo24Hours()}</span>
+                </div>
               </div>
             </div>
           )}
@@ -242,16 +233,33 @@ const App: FC = () => {
             {CONDITION}
             <img src={ICON} alt="" />
           </div>
-          <div className="temperature">{TEMPERATURE}</div>
-          <div className="perseived">{PERCEIVED_TEMP}</div>
+          <div className="perceived">
+            {PERCEIVED_TEMP}
+            <span>
+              <FaTemperatureHalf />
+            </span>
+          </div>
           <div className="temp-min-max">
+            <span>
+              <FaTemperatureArrowDown />
+            </span>
             {TEMP_MIN}
             {TEMP_MAX}
+            <span>
+              <FaTemperatureArrowUp />
+            </span>
           </div>
           <div className="wind-speed">{WIND_KPH}</div>
           <div className="wind-dir">{WIND_DIR}</div>
-          <div className="air-humidity">{HUMIDITY}</div>
+          <div className="air-humidity">
+            <span>{HUMIDITY}</span>
+            <span>
+              <WiHumidity />
+            </span>
+          </div>
         </>
+      ) : (
+        <h2>NOT FOUND, TRY ANOTHER LOCATION...</h2>
       )}
       <form className="form" onSubmit={inputCity}>
         <input

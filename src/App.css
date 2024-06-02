@@ -23,17 +23,13 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows:
-    3rem 2rem 19rem 1fr repeat(6, 2.5rem)
-    3rem;
+  grid-template-rows: 3rem 1rem 21rem 1fr repeat(6, 3rem);
   grid-template-areas:
     "location"
     "country"
-    /* "local-time" */
     "sunrise-sunset"
     "condition"
-    "temperature"
-    "perseived-temp"
+    "perceived-temp"
     "min-max-temp"
     "wind-speed"
     "wind-dir"
@@ -44,17 +40,14 @@ body {
 
 .location {
   grid-area: location;
-  padding-top: 0.5rem;
+  padding-top: 1rem;
   font-size: 2rem;
 }
 
 .country {
   grid-area: country;
+  padding-top: 0.5rem;
   font-size: 1rem;
-}
-
-.local-time {
-  grid-area: local-time;
 }
 
 .sunrise-sunset {
@@ -63,7 +56,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16rem;
+  width: 18rem;
   aspect-ratio: 1;
   border: 2px solid yellow;
   border-radius: 50%;
@@ -87,16 +80,31 @@ body {
   border-radius: 50%;
 }
 
+.sun-icons-wrapper {
+  font-size: 1.25rem;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 223, 25, 1);
+
+  :not(span) {
+    font-size: 2rem;
+  }
+}
+
 .day-time {
-  width: 80%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.local-time {
-  height: 12rem;
-  font-size: 1.25rem;
+.local-temp {
+  height: 14rem;
+  font-size: 1.5rem;
+  color: rgba(255, 223, 25, 1);
+
+  .temp {
+    font-size: 2rem;
+  }
 }
 
 .condition {
@@ -111,6 +119,31 @@ body {
   }
 }
 
+.perceived,
+.temp-min-max {
+  font-size: 1.5rem;
+  color: rgba(255, 223, 25, 1);
+
+
+
+  span {
+    font-size: 1.25rem;
+    padding-inline: 0.5rem;
+  }
+}
+
+.air-humidity {
+  color: rgba(255, 223, 25, 1);
+  font-size: 1.75rem;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  span {
+    padding-inline: 0.25rem;
+  }
+}
+
 .form {
   grid-area: form;
   display: flex;
@@ -118,9 +151,10 @@ body {
   input {
     font-size: 1.25rem;
     font-weight: bold;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     border: none;
     width: 70%;
+    height: 3rem;
     text-align: center;
     caret-color: firebrick;
 
@@ -133,7 +167,7 @@ body {
 
   button {
     font-size: 1rem;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     border: none;
     outline: none;
     background-color: firebrick;
@@ -141,5 +175,6 @@ body {
     font-weight: bold;
     letter-spacing: 2px;
     width: 30%;
+    height: 3rem;
   }
 }
