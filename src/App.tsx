@@ -221,10 +221,10 @@ const App: FC = () => {
                       <div className="wind-dir">{WIND_DIR}</div>
                     </div>
                     <div className="air-humidity">
-                      <span>{HUMIDITY}</span>
                       <span className="humidity-icon">
                         <WiHumidity />
                       </span>
+                      <span>{HUMIDITY}</span>
                     </div>
                   </div>
                   <div className="sun-icons-wrapper">
@@ -279,10 +279,10 @@ const App: FC = () => {
                       <div className="wind-dir">{WIND_DIR}</div>
                     </div>
                     <div className="air-humidity">
-                      <span>{HUMIDITY}</span>
                       <span className="humidity-icon">
                         <WiHumidity />
                       </span>
+                      <span>{HUMIDITY}</span>
                     </div>
                   </div>
                   <div className="sun-icons-wrapper">
