@@ -23,17 +23,13 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 3rem 1rem 22rem 1fr 3rem;
+  grid-template-rows: 3rem 2rem 20rem 1fr 11rem 3rem;
   grid-template-areas:
     "location"
     "country"
     "sunrise-sunset"
     "condition"
-    "perceived-temp"
-    "min-max-temp"
-    "wind-speed"
-    "wind-dir"
-    "air-humidity"
+    "forecast"
     "form";
   max-width: 768px;
 }
@@ -41,7 +37,7 @@ body {
 .location {
   grid-area: location;
   padding-top: 1rem;
-  font-size: 2rem;
+  font-size: 1.25rem;
 }
 
 .country {
@@ -135,7 +131,7 @@ body {
   color: rgba(255, 223, 25, 1);
 
   span {
-    font-size: 1.25rem;
+    font-size: 1rem;
     padding-inline: 0.5rem;
   }
 }
@@ -147,17 +143,17 @@ body {
   border-radius: 50%;
   position: relative;
   z-index: 5;
-  
+
   .wind-direction-icon {
     color: #fff;
     width: 6rem;
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: #000;
+    background-color: transparent;
     position: absolute;
-    z-index:  -1;
+    z-index: -1;
     rotate: 0deg;
-    
+
     .arrow-icon {
       color: rgba(255, 223, 25, 1);
       font-size: 2rem;
@@ -171,7 +167,7 @@ body {
   }
 
   span {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 }
 
@@ -187,6 +183,12 @@ body {
   }
 }
 
+.forecast {
+  grid-area: forecast;
+  height: 10rem;
+  outline: 2px solid rgba(255, 223, 25, 1);
+}
+
 .form {
   grid-area: form;
   display: flex;
@@ -194,7 +196,6 @@ body {
   input {
     font-size: 1.25rem;
     font-weight: bold;
-    /* padding: 0.5rem; */
     border: none;
     width: 70%;
     height: 3rem;
@@ -210,7 +211,6 @@ body {
 
   button {
     font-size: 1rem;
-    /* padding: 0.5rem; */
     border: none;
     outline: none;
     background-color: firebrick;
