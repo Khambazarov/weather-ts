@@ -5,6 +5,12 @@ import { WiHumidity, WiStrongWind, WiDirectionUp } from "react-icons/wi";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
+/*
+  TODO's
+    - bg-img depens on weather or location ?
+    - weather forecast –> hourly
+    - weather forecast –> next three days
+*/
 interface WeatherData {
   location: {
     name: string;
@@ -90,25 +96,19 @@ const App: FC = () => {
   const MOON_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/night/113.png`;
   const TEMPERATURE = data && `${Math.round(data.current.temp_c)}`;
+  const MIN_TEMP =
+    data && `${Math.round(data.forecast.forecastday[0].day.mintemp_c)}`;
+  const MAX_TEMP =
+    data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
   const WIND_MS =
     data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
   const WIND_DIR = data && `${data?.current.wind_dir}`;
   const HUMIDITY = data && `${data?.current.humidity ?? ""}`;
   const SUNRISE =
-    data &&
-    `${
-      data?.forecast.forecastday
-        .map((i) => i.astro.sunrise)
-        .join("")
-        .split(" ")[0]
-    }`;
+    data && `${data?.forecast.forecastday[0].astro.sunrise.split(" ")[0]}`;
   const sunsetConvertTo24Hours = () => {
     const timeSplitting =
-      data &&
-      data?.forecast.forecastday
-        .map((i) => i.astro.sunset)
-        .join("")
-        .split(" ")[0];
+      data && data?.forecast.forecastday[0].astro.sunset.split(" ")[0];
     const getMinuts = timeSplitting?.split(":")[1];
     const convertHourTo24 = Number(timeSplitting?.split(":")[0]) + 12;
     const joinTime = `${convertHourTo24}:${getMinuts}`;
@@ -117,29 +117,19 @@ const App: FC = () => {
 
   const sunriseTimeConvertToNumber = () => {
     const timeSplitting =
-      data &&
-      data?.forecast.forecastday[0].astro.sunrise
-        // .map((i) => i.astro.sunrise)
-        // .join("")
-        .split(" ")[0];
+      data && data?.forecast.forecastday[0].astro.sunrise.split(" ")[0];
     const getMinuts = timeSplitting?.split(":")[1];
     const convertHourTo24 =
       Number(timeSplitting?.split(":")[0]) * 60 + Number(getMinuts);
-    console.log("sunriseTime:", convertHourTo24);
     return convertHourTo24;
   };
 
   const sunsetTimeConvertToNumber = () => {
     const timeSplitting =
-      data &&
-      data?.forecast.forecastday[0].astro.sunset
-        // .map((i) => i.astro.sunrise)
-        // .join("")
-        .split(" ")[0];
+      data && data?.forecast.forecastday[0].astro.sunset.split(" ")[0];
     const getMinuts = timeSplitting?.split(":")[1];
     const convertHourTo24 =
       Number(timeSplitting?.split(":")[0]) * 60 + Number(getMinuts) + 720;
-    console.log("sunsetTime:", convertHourTo24);
     return convertHourTo24;
   };
 
@@ -148,7 +138,7 @@ const App: FC = () => {
     const CIRCLE = Math.PI * 4;
     const timeSplitting = data && data?.location.localtime.split(" ")[1];
     const convertedMinutes = Number(timeSplitting?.split(":")[1]);
-    const convertedHour = Number(timeSplitting?.split(":")[0]) * 60 + 180; // +180 Minuten = 90deg ?? muss andere lösung finden!
+    const convertedHour = Number(timeSplitting?.split(":")[0]) * 60 + 180;
     const currentTimeInMinuts = convertedHour + convertedMinutes;
     const result = (currentTimeInMinuts / DAY) * CIRCLE;
     return result;
@@ -165,7 +155,6 @@ const App: FC = () => {
   const localTimeConvertToNumber = () => {
     const getMinutes = Number(LOCAL_TIME?.split(":")[1]);
     const getHours = Number(LOCAL_TIME?.split(":")[0]);
-    console.log("localTime:", getHours * 60 + getMinutes);
     return getHours * 60 + getMinutes;
   };
 
@@ -197,127 +186,71 @@ const App: FC = () => {
           <h2 className="country">{COUNTRY}</h2>
           <span className="local-time">{LOCAL_TIME}</span>
           {/* krasnoyarsk +5 | tokyo +7 | sydney +8 | la -9 | texas -7*/}
-          {sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
-          localTimeConvertToNumber() < sunsetTimeConvertToNumber() ? (
-            <>
-              <div
-                className="sunrise-sunset circle"
-                style={{ borderColor: "rgba(255, 223, 25, 1)" }}
-              >
-                <img
-                  className="sun"
-                  src={SUN_ICON}
-                  style={{
-                    top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
-                    left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
-                  }}
-                />
-                <div className="day-time">
-                  <div className="sun-icons-wrapper">
-                    <FiSunrise />
-                    <span>{SUNRISE}</span>
+          <div
+            className="sunrise-sunset circle"
+            style={{ borderColor: "rgba(255, 223, 25, 1)" }}
+          >
+            <img
+              className="sun"
+              src={
+                sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
+                localTimeConvertToNumber() < sunsetTimeConvertToNumber()
+                  ? SUN_ICON
+                  : MOON_ICON
+              }
+              style={{
+                top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
+                left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
+              }}
+            />
+            <div className="day-time">
+              <div className="sun-icons-wrapper">
+                <FiSunrise />
+                <span>{SUNRISE}</span>
+              </div>
+              <div className="local-temp">
+                <div className="temp-icons">
+                  <div className="icon-thermometer">
+                    <FaTemperatureHalf />
                   </div>
-                  <div className="local-temp">
-                    <div className="temp-icons">
-                      <div className="icon-thermometer">
-                        <FaTemperatureHalf />
-                      </div>
-                      <div className="temps">{TEMPERATURE}</div>
-                    </div>
-                    <div className="wind-speed-dir">
-                      <div
-                        className="wind-direction-icon"
-                        style={{
-                          rotate: `${windDirection}`,
-                        }}
-                      >
-                        <span className="arrow-icon">
-                          <WiDirectionUp />
-                        </span>
-                      </div>
-                      <span>
-                        <WiStrongWind />
-                      </span>
-                      <div className="wind-speed">{WIND_MS}</div>
-                      <div className="wind-dir">{WIND_DIR}</div>
-                    </div>
-                    <div className="air-humidity">
-                      <span className="humidity-icon">
-                        <WiHumidity />
-                      </span>
-                      <span>{HUMIDITY}</span>
-                    </div>
+                  <div className="temps">{TEMPERATURE}</div>
+                </div>
+                <div className="wind-speed-dir">
+                  <div
+                    className="wind-direction-icon"
+                    style={{
+                      rotate: `${windDirection}`,
+                    }}
+                  >
+                    <span className="arrow-icon">
+                      <WiDirectionUp />
+                    </span>
                   </div>
-                  <div className="sun-icons-wrapper">
-                    <FiSunset />
-                    <span>{data && sunsetConvertTo24Hours()}</span>
-                  </div>
+                  <span>
+                    <WiStrongWind />
+                  </span>
+                  <div className="wind-speed">{WIND_MS}</div>
+                  <div className="wind-dir">{WIND_DIR}</div>
+                </div>
+                <div className="air-humidity">
+                  <span className="humidity-icon">
+                    <WiHumidity />
+                  </span>
+                  <span>{HUMIDITY}</span>
                 </div>
               </div>
-              <div className="forecast"></div>
-            </>
-          ) : (
-            <>
-              <div
-                className="sunrise-sunset circle"
-                style={{ borderColor: "rgba(255, 255, 255, 0.7)" }}
-              >
-                <img
-                  className="sun"
-                  src={MOON_ICON}
-                  style={{
-                    top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
-                    left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
-                  }}
-                />
-                <div className="day-time">
-                  <div className="sun-icons-wrapper">
-                    <FiSunrise />
-                    <span>{SUNRISE}</span>
-                  </div>
-                  <div className="local-temp">
-                    <div className="temp-icons">
-                      <div className="icon-thermometer">
-                        <FaTemperatureHalf />
-                      </div>
-                      <div className="temps">{TEMPERATURE}</div>
-                    </div>
-                    <div className="wind-speed-dir">
-                      <div
-                        className="wind-direction-icon"
-                        style={{
-                          rotate: `${windDirection}`,
-                        }}
-                      >
-                        <span className="arrow-icon">
-                          <WiDirectionUp />
-                        </span>
-                      </div>
-                      <span>
-                        <WiStrongWind />
-                      </span>
-                      <div className="wind-speed">{WIND_MS}</div>
-                      <div className="wind-dir">{WIND_DIR}</div>
-                    </div>
-                    <div className="air-humidity">
-                      <span className="humidity-icon">
-                        <WiHumidity />
-                      </span>
-                      <span>{HUMIDITY}</span>
-                    </div>
-                  </div>
-                  <div className="sun-icons-wrapper">
-                    <FiSunset />
-                    <span>{data && sunsetConvertTo24Hours()}</span>
-                  </div>
-                </div>
+              <div className="sun-icons-wrapper">
+                <FiSunset />
+                <span>{data && sunsetConvertTo24Hours()}</span>
               </div>
-              <div className="forecast"></div>
-            </>
-          )}
+            </div>
+          </div>
           <div className="condition">
             {CONDITION}
             <img src={ICON} alt="" />
+          </div>
+          <div className="forecast">
+            <h2>forecast each hour today</h2>
           </div>
         </>
       ) : (

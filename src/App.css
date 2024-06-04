@@ -2,7 +2,7 @@
 
 /* TODO's */
 /* css property: scroll-snap for hourly weather forecast */
-/* bg */
+/* bg-img || animated img */
 
 * {
   margin: 0;
@@ -205,6 +205,7 @@ body {
     width: 70%;
     height: 3rem;
     text-align: center;
+
     caret-color: firebrick;
 
     &::placeholder {
