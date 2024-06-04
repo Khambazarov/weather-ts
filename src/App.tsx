@@ -87,6 +87,8 @@ const App: FC = () => {
   const ICON = data && `https:${data?.current.condition.icon}`;
   const SUN_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/day/113.png`;
+  const MOON_ICON =
+    data && `https://cdn.weatherapi.com/weather/64x64/night/113.png`;
   const TEMPERATURE = data && `${Math.round(data.current.temp_c)}`;
   const WIND_MS =
     data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
@@ -116,13 +118,28 @@ const App: FC = () => {
   const sunriseTimeConvertToNumber = () => {
     const timeSplitting =
       data &&
-      data?.forecast.forecastday
-        .map((i) => i.astro.sunrise)
-        .join("")
+      data?.forecast.forecastday[0].astro.sunrise
+        // .map((i) => i.astro.sunrise)
+        // .join("")
         .split(" ")[0];
     const getMinuts = timeSplitting?.split(":")[1];
     const convertHourTo24 =
       Number(timeSplitting?.split(":")[0]) * 60 + Number(getMinuts);
+    console.log("sunriseTime:", convertHourTo24);
+    return convertHourTo24;
+  };
+
+  const sunsetTimeConvertToNumber = () => {
+    const timeSplitting =
+      data &&
+      data?.forecast.forecastday[0].astro.sunset
+        // .map((i) => i.astro.sunrise)
+        // .join("")
+        .split(" ")[0];
+    const getMinuts = timeSplitting?.split(":")[1];
+    const convertHourTo24 =
+      Number(timeSplitting?.split(":")[0]) * 60 + Number(getMinuts) + 720;
+    console.log("sunsetTime:", convertHourTo24);
     return convertHourTo24;
   };
 
@@ -148,6 +165,7 @@ const App: FC = () => {
   const localTimeConvertToNumber = () => {
     const getMinutes = Number(LOCAL_TIME?.split(":")[1]);
     const getHours = Number(LOCAL_TIME?.split(":")[0]);
+    console.log("localTime:", getHours * 60 + getMinutes);
     return getHours * 60 + getMinutes;
   };
 
@@ -177,7 +195,10 @@ const App: FC = () => {
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          {sunriseTimeConvertToNumber > localTimeConvertToNumber ? (
+          <span className="local-time">{LOCAL_TIME}</span>
+          {/* krasnoyarsk +5 | tokyo +7 | sydney +8 | la -9 | texas -7*/}
+          {sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
+          localTimeConvertToNumber() < sunsetTimeConvertToNumber() ? (
             <>
               <div
                 className="sunrise-sunset circle"
@@ -239,11 +260,11 @@ const App: FC = () => {
             <>
               <div
                 className="sunrise-sunset circle"
-                style={{ borderColor: "rgba(255, 223, 25, 0.5)" }}
+                style={{ borderColor: "rgba(255, 255, 255, 0.7)" }}
               >
                 <img
                   className="sun"
-                  src={SUN_ICON}
+                  src={MOON_ICON}
                   style={{
                     top: `calc(50% - 2rem - sin(${calculateSunAngle()}) * 50%)`,
                     left: `calc(50% - 2rem - cos(${calculateSunAngle()}) * 50%)`,
