@@ -96,10 +96,10 @@ const App: FC = () => {
   const MOON_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/night/113.png`;
   const TEMPERATURE = data && `${Math.round(data.current.temp_c)}`;
-  const MIN_TEMP =
-    data && `${Math.round(data.forecast.forecastday[0].day.mintemp_c)}`;
-  const MAX_TEMP =
-    data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
+  // const MIN_TEMP =
+  // data && `${Math.round(data.forecast.forecastday[0].day.mintemp_c)}`;
+  // const MAX_TEMP =
+  // data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
   const WIND_MS =
     data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
   const WIND_DIR = data && `${data?.current.wind_dir}`;
@@ -188,7 +188,12 @@ const App: FC = () => {
           {/* krasnoyarsk +5 | tokyo +7 | sydney +8 | la -9 | texas -7*/}
           <div
             className="sunrise-sunset circle"
-            style={{ borderColor: "rgba(255, 223, 25, 1)" }}
+            style={
+              sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
+              localTimeConvertToNumber() < sunsetTimeConvertToNumber()
+                ? { borderColor: "rgba(255, 223, 25, 1)" }
+                : { borderColor: "rgba(255, 255, 255, 0.7)" }
+            }
           >
             <img
               className="sun"
@@ -213,7 +218,7 @@ const App: FC = () => {
                   <div className="icon-thermometer">
                     <FaTemperatureHalf />
                   </div>
-                  <div className="temps">{TEMPERATURE}</div>
+                  <div className="temps">{TEMPERATURE}°</div>
                 </div>
                 <div className="wind-speed-dir">
                   <div
@@ -233,10 +238,10 @@ const App: FC = () => {
                   <div className="wind-dir">{WIND_DIR}</div>
                 </div>
                 <div className="air-humidity">
+                  <span>{HUMIDITY}</span>
                   <span className="humidity-icon">
                     <WiHumidity />
                   </span>
-                  <span>{HUMIDITY}</span>
                 </div>
               </div>
               <div className="sun-icons-wrapper">

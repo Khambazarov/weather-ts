@@ -13,6 +13,7 @@
 body {
   font-family: "Roboto", sans-serif;
   background-color: #000;
+  color: rgba(255, 223, 25, 1);
 }
 
 .container {
@@ -20,7 +21,7 @@ body {
   min-height: 100svh;
   /* min-height: 100dvh; */
   background-color: #000;
-  color: #fff;
+  /* color: #fff; */
   font-weight: bold;
   letter-spacing: 2px;
   text-align: center;
@@ -59,7 +60,7 @@ body {
   justify-content: center;
   width: 18rem;
   aspect-ratio: 1;
-  border: 2px solid yellow;
+  border: 2px solid rgba(255, 223, 25, 1);
   border-radius: 50%;
   background: transparent;
   position: relative;
@@ -76,16 +77,16 @@ body {
   /* --angle-int: var(--angle); */
   /* top: calc(50% - sin(var(--angle)) * 50% - 2rem); */
   /* left: calc(50% - cos(var(--angle)) * 50% - 2rem); */
+  /* display: block; */
+  /* border-radius: 50%; */
   position: absolute;
-  display: block;
-  border-radius: 50%;
 }
 
 .sun-icons-wrapper {
   font-size: 1rem;
   display: grid;
   place-items: center;
-  color: rgba(255, 223, 25, 1);
+  /* color: rgba(255, 223, 25, 1); */
 
   :not(span) {
     font-size: 1.25rem;
@@ -100,9 +101,9 @@ body {
 }
 
 .local-temp {
-  height: 15rem;
+  height: 14rem;
   width: 6rem;
-  color: rgba(255, 223, 25, 1);
+  /* color: rgba(255, 223, 25, 1); */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -114,7 +115,7 @@ body {
   align-items: baseline;
 
   .temps {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 }
 
@@ -133,7 +134,7 @@ body {
 .perceived,
 .temp-min-max {
   font-size: 1rem;
-  color: rgba(255, 223, 25, 1);
+  /* color: rgba(255, 223, 25, 1); */
 
   span {
     font-size: 1rem;
@@ -147,7 +148,6 @@ body {
   aspect-ratio: 1;
   border-radius: 50%;
   position: relative;
-  z-index: 5;
 
   .wind-direction-icon {
     color: #fff;
@@ -156,7 +156,6 @@ body {
     border-radius: 50%;
     background-color: transparent;
     position: absolute;
-    z-index: -1;
     rotate: 0deg;
 
     .arrow-icon {
@@ -167,7 +166,6 @@ body {
       right: calc(50% - 1rem);
       bottom: auto;
       left: calc(50% - 1rem);
-      z-index: -2;
     }
   }
 
@@ -177,7 +175,7 @@ body {
 }
 
 .air-humidity {
-  color: rgba(255, 223, 25, 1);
+  /* color: rgba(255, 223, 25, 1); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -191,7 +189,7 @@ body {
 .forecast {
   grid-area: forecast;
   height: 10rem;
-  outline: 2px solid rgba(255, 223, 25, 1);
+  border: 2px solid rgba(255, 223, 25, 1);
 }
 
 .form {
