@@ -220,10 +220,10 @@ const App: FC = () => {
               </div>
               <div className="local-temp">
                 <div className="temp-icons">
+                  <div className="temps">{TEMPERATURE}</div>
                   <div className="icon-thermometer">
                     <FaTemperatureHalf />
                   </div>
-                  <div className="temps">{TEMPERATURE}°</div>
                 </div>
                 <div className="wind-speed-dir">
                   <div
