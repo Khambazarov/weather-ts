@@ -9,7 +9,7 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
   TODO's
     - bg-img depens on weather or location ?
     - weather forecast –> hourly
-    - weather forecast –> next three days
+    - weather forecast –> next two days
 */
 
 interface WeatherData {
@@ -106,7 +106,7 @@ const App: FC = () => {
   // const MAX_TEMP =
   // data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
   const WIND_MS =
-    data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""}m/s`;
+    data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
   const WIND_DIR = data && `${data?.current.wind_dir}`;
   const HUMIDITY = data && `${data?.current.humidity ?? ""}`;
   const SUNRISE =
@@ -187,11 +187,12 @@ const App: FC = () => {
     <div className="container">
       {LOCATION ? (
         <>
-          <h1 className="location">{LOCATION}</h1>
-          <h2 className="country">{COUNTRY}</h2>
-          <span className="local-time">{CONVERTED_TIME}</span>
+          <div className="condition">
+            {CONDITION}
+            <img src={ICON} alt="" />
+          </div>
           <div
-            className="sunrise-sunset circle"
+            className="sunrise-sunset"
             style={
               sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
               localTimeConvertToNumber() < sunsetTimeConvertToNumber()
@@ -251,10 +252,9 @@ const App: FC = () => {
               </div>
             </div>
           </div>
-          <div className="condition">
-            {CONDITION}
-            <img src={ICON} alt="" />
-          </div>
+          <h1 className="location">{LOCATION}</h1>
+          <h2 className="country">{COUNTRY}</h2>
+          <span className="local-time">{CONVERTED_TIME}</span>
           <div className="forecast"></div>
         </>
       ) : (
