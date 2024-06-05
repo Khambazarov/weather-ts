@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, FC } from "react";
 import { FiSunset, FiSunrise } from "react-icons/fi";
 import { FaTemperatureHalf } from "react-icons/fa6";
-import { WiHumidity, WiStrongWind, WiDirectionUp } from "react-icons/wi";
+import { WiHumidity, WiDirectionUp } from "react-icons/wi";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -11,6 +11,7 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
     - weather forecast –> hourly
     - weather forecast –> next three days
 */
+
 interface WeatherData {
   location: {
     name: string;
@@ -88,6 +89,10 @@ const App: FC = () => {
 
   const LOCATION = data?.location?.name;
   const LOCAL_TIME = data?.location.localtime.split(" ")[1];
+  const CONVERTED_TIME =
+    Number(data?.location.localtime.split(" ")[1].split(":")[0]) < 10
+      ? `0${LOCAL_TIME}`
+      : LOCAL_TIME;
   const COUNTRY = data?.location.country;
   const CONDITION = data?.current.condition.text;
   const ICON = data && `https:${data?.current.condition.icon}`;
@@ -101,7 +106,7 @@ const App: FC = () => {
   // const MAX_TEMP =
   // data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
   const WIND_MS =
-    data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
+    data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""}m/s`;
   const WIND_DIR = data && `${data?.current.wind_dir}`;
   const HUMIDITY = data && `${data?.current.humidity ?? ""}`;
   const SUNRISE =
@@ -184,8 +189,7 @@ const App: FC = () => {
         <>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          <span className="local-time">{LOCAL_TIME}</span>
-          {/* krasnoyarsk +5 | tokyo +7 | sydney +8 | la -9 | texas -7*/}
+          <span className="local-time">{CONVERTED_TIME}</span>
           <div
             className="sunrise-sunset circle"
             style={
@@ -231,9 +235,6 @@ const App: FC = () => {
                       <WiDirectionUp />
                     </span>
                   </div>
-                  <span>
-                    <WiStrongWind />
-                  </span>
                   <div className="wind-speed">{WIND_MS}</div>
                   <div className="wind-dir">{WIND_DIR}</div>
                 </div>

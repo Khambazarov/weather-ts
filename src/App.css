@@ -143,29 +143,33 @@ body {
 }
 
 .wind-speed-dir {
-  outline: 2px solid rgba(255, 223, 25, 1);
+  border: 2px solid rgba(255, 223, 25, 1);
   width: 6rem;
   aspect-ratio: 1;
   border-radius: 50%;
   position: relative;
+  display: grid;
+  place-content: center;
 
   .wind-direction-icon {
-    color: #fff;
-    width: 6rem;
+    width: calc(6rem - 4px);
     aspect-ratio: 1;
     border-radius: 50%;
-    background-color: transparent;
+    /* border-top: 4px dotted rgba(255, 255, 255, 1); */
+    /* border-top: 8px dotted rgba(255, 223, 25, 1); */
     position: absolute;
     rotate: 0deg;
 
     .arrow-icon {
       color: rgba(255, 223, 25, 1);
-      font-size: 2rem;
+      border-top: 8px double rgba(255, 223, 25, 1);
+      border-radius: 50%;
+      font-size: 2.5rem;
       position: absolute;
-      top: -1.5rem;
-      right: calc(50% - 1rem);
+      top: -24px;
+      right: calc(50% - 1.25rem);
       bottom: auto;
-      left: calc(50% - 1rem);
+      left: calc(50% - 1.25rem);
     }
   }
 
