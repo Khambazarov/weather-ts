@@ -27,13 +27,13 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 3rem 2rem 1rem 20rem 1fr 11rem 3rem;
+  grid-template-rows: 1fr 20rem  1rem 2rem 2rem 10rem 3rem;
   grid-template-areas:
+  "condition"
+  "sunrise-sunset"
     "location"
     "country"
     "local-time"
-    "sunrise-sunset"
-    "condition"
     "forecast"
     "form";
   max-width: 768px;
@@ -41,8 +41,7 @@ body {
 
 .location {
   grid-area: location;
-  padding-top: 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
 .country {
@@ -75,7 +74,7 @@ body {
   place-items: center;
 
   :not(span) {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 }
 
@@ -112,7 +111,7 @@ body {
   align-items: center;
 
   img {
-    width: 10rem;
+    width: 5rem;
   }
 }
 

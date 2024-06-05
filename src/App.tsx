@@ -255,9 +255,7 @@ const App: FC = () => {
             {CONDITION}
             <img src={ICON} alt="" />
           </div>
-          <div className="forecast">
-            <h2>forecast each hour today</h2>
-          </div>
+          <div className="forecast"></div>
         </>
       ) : (
         <h2>LOADING...</h2>
