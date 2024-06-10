@@ -149,8 +149,7 @@ body {
         .humidity-icon {
           font-size: 1.5rem;
           line-height: 1rem;
-        color: rgba(255, 223, 25, 1);
-
+          color: rgba(255, 223, 25, 1);
         }
       }
     }
@@ -176,7 +175,26 @@ body {
 .forecast {
   grid-area: forecast;
   height: 10rem;
-  border: 2px solid rgba(255, 223, 25, 1);
+  overflow-x: auto;
+
+  .hourly {
+    list-style-type: none;
+    display: flex;
+    justify-items: center;
+
+    .each-hour {
+      border-right: 1px solid rgba(255, 255, 255, 1);
+      padding-inline: 2rem;
+      padding-block: 0.5rem;
+      width: 3rem;
+      font-size: 0.75rem;
+    }
+
+    img {
+      border-right: 1px solid rgba(255, 255, 255, 1);
+      width: 4.125rem;
+    }
+  }
 }
 
 .form {

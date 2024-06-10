@@ -39,9 +39,15 @@ interface WeatherData {
         sunrise: string;
         sunset: string;
       };
-      hour: {
-        time: [];
-      };
+      hour: [
+        {
+          time: string;
+          temp_c: number;
+          condition: {
+            icon: string;
+          };
+        }
+      ];
     }[];
   };
 }
@@ -111,6 +117,20 @@ const App: FC = () => {
   const HUMIDITY = data && `${data?.current.humidity ?? ""}`;
   const SUNRISE =
     data && `${data?.forecast.forecastday[0].astro.sunrise.split(" ")[0]}`;
+
+  const HOURLY =
+    data &&
+    data.forecast.forecastday[0].hour.map(
+      (i) => i.time.split(" ")[1].split(":")[0]
+    );
+
+  const HOURLY_TEMP =
+    data && data.forecast.forecastday[0].hour.map((i) => Math.round(i.temp_c));
+
+  const CONDITION_ICON =
+    data &&
+    data?.forecast.forecastday[0].hour.map((i) => `https:${i.condition.icon}`);
+
   const sunsetConvertTo24Hours = () => {
     const timeSplitting =
       data && data?.forecast.forecastday[0].astro.sunset.split(" ")[0];
@@ -224,6 +244,7 @@ const App: FC = () => {
                   <div className="icon-thermometer">
                     <FaTemperatureHalf />
                   </div>
+                  index
                 </div>
                 <div className="wind-speed-dir">
                   <div
@@ -255,7 +276,27 @@ const App: FC = () => {
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
           <span className="local-time">{CONVERTED_TIME}</span>
-          <div className="forecast"></div>
+          <div className="forecast">
+            <ul className="hourly">
+              {HOURLY?.map((i, index) => (
+                <li className="each-hour" key={index}>
+                  {`${i}h`}
+                </li>
+              ))}
+            </ul>
+            <ul className="hourly">
+            {CONDITION_ICON?.map((i, index) => (
+              <img key={index} src={i} alt="" />
+            ))}
+            </ul>
+            <div className="hourly">
+              {HOURLY_TEMP?.map((i, index) => (
+                <li className="each-hour" key={index}>
+                  {`${i}°`}
+                </li>
+              ))}
+            </div>
+          </div>
         </>
       ) : (
         <h2>LOADING...</h2>
