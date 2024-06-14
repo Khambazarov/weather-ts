@@ -244,7 +244,6 @@ const App: FC = () => {
                   <div className="icon-thermometer">
                     <FaTemperatureHalf />
                   </div>
-                  index
                 </div>
                 <div className="wind-speed-dir">
                   <div
