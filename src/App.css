@@ -126,13 +126,13 @@ body {
           .arrow-icon {
             color: rgba(255, 223, 25, 1);
             border-top: 8px double rgba(255, 223, 25, 1);
-            border-radius: 50%;
-            font-size: 2.5rem;
+            border-radius: 30%;
+            font-size: 3rem;
             position: absolute;
-            top: -24px;
-            right: calc(50% - 1.25rem);
+            top: -20px;
+            right: calc(50% - 1.5rem);
             bottom: auto;
-            left: calc(50% - 1.25rem);
+            left: calc(50% - 1.5rem);
           }
         }
 

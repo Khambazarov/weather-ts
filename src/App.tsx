@@ -8,7 +8,6 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 /*
   TODO's
     - bg-img depens on weather or location ?
-    - weather forecast –> hourly
     - weather forecast –> next two days
 */
 
