@@ -275,18 +275,6 @@ const App: FC = () => {
           <h2 className="country">{COUNTRY}</h2>
           <span className="local-time">{CONVERTED_TIME}</span>
           <div className="forecast">
-            <ul className="hourly">
-              {HOURLY?.map((i, index) => (
-                <li className="each-hour" key={index}>
-                  {`${i}h`}
-                </li>
-              ))}
-            </ul>
-            <ul className="hourly">
-            {CONDITION_ICON?.map((i, index) => (
-              <img key={index} src={i} alt="" />
-            ))}
-            </ul>
             <div className="hourly">
               {HOURLY_TEMP?.map((i, index) => (
                 <li className="each-hour" key={index}>
@@ -294,6 +282,18 @@ const App: FC = () => {
                 </li>
               ))}
             </div>
+            <ul className="hourly">
+            {CONDITION_ICON?.map((i, index) => (
+              <img key={index} src={i} alt="" />
+            ))}
+            </ul>
+            <ul className="hourly">
+              {HOURLY?.map((i, index) => (
+                <li className="each-hour" key={index}>
+                  {`${i}h`}
+                </li>
+              ))}
+            </ul>
           </div>
         </>
       ) : (
