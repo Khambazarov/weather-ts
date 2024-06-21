@@ -11,7 +11,7 @@ const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
     - weather forecast –> next two days
 */
 
-interface WeatherData {
+type WeatherData = {
   location: {
     name: string;
     country: string;
@@ -239,10 +239,10 @@ const App: FC = () => {
               </div>
               <div className="local-temp">
                 <div className="temp-icons">
-                  <div className="temps">{TEMPERATURE}</div>
-                  <div className="icon-thermometer">
+                  <div className="temps">{TEMPERATURE}°</div>
+                  {/* <div className="icon-thermometer">
                     <FaTemperatureHalf />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="wind-speed-dir">
                   <div
@@ -259,10 +259,10 @@ const App: FC = () => {
                   <div className="wind-dir">{WIND_DIR}</div>
                 </div>
                 <div className="air-humidity">
-                  <span>{HUMIDITY}</span>
-                  <span className="humidity-icon">
+                  <span>{HUMIDITY}%</span>
+                  {/* <span className="humidity-icon">
                     <WiHumidity />
-                  </span>
+                  </span> */}
                 </div>
               </div>
               <div className="sun-icons-wrapper">
