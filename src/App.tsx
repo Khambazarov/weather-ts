@@ -251,9 +251,9 @@ const App: FC = () => {
                       rotate: `${windDirection}`,
                     }}
                   >
-                    <span className="arrow-icon">
+                    {/* <span className="arrow-icon">
                       <WiDirectionUp />
-                    </span>
+                    </span> */}
                   </div>
                   <div className="wind-speed">{WIND_MS}</div>
                   <div className="wind-dir">{WIND_DIR}</div>
