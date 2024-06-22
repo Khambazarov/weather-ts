@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, FC } from "react";
 import { FiSunset, FiSunrise } from "react-icons/fi";
-import { FaTemperatureHalf } from "react-icons/fa6";
-import { WiHumidity, WiDirectionUp } from "react-icons/wi";
+// import { FaTemperatureHalf } from "react-icons/fa6";
+// import { WiHumidity, WiDirectionUp } from "react-icons/wi";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
