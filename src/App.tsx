@@ -82,7 +82,7 @@ const App: FC = () => {
         },
         (error: unknown) => {
           console.error("Error:", error);
-          fetchData("Sydney");
+          fetchData("Hamburg");
           setInitialized(true);
         }
       );
