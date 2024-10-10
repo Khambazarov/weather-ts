@@ -18,21 +18,26 @@ type WeatherData = {
     localtime: string;
   };
   current: {
+    temp_c: number;
     condition: {
       text: string;
       icon: string;
     };
-    temp_c: number;
-    feelslike_c: number;
     wind_kph: number;
     wind_dir: string;
     humidity: number;
+    feelslike_c: number;
   };
   forecast: {
     forecastday: {
+      date: string;
       day: {
         maxtemp_c: number;
         mintemp_c: number;
+        condition: {
+          text: string;
+          icon: string;
+        };
       };
       astro: {
         sunrise: string;
@@ -49,7 +54,7 @@ type WeatherData = {
       ];
     }[];
   };
-}
+};
 
 const App: FC = () => {
   const [initialized, setInitialized] = useState(false);
@@ -61,7 +66,7 @@ const App: FC = () => {
   useEffect(() => {
     const fetchData = async (city: string) => {
       const current = `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`;
-      const forecast = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=1&aqi=no&alerts=no`;
+      const forecast = `https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=3&aqi=no&alerts=no`;
       try {
         const response1 = await fetch(current);
         const data1 = await response1.json();
@@ -106,10 +111,9 @@ const App: FC = () => {
   const MOON_ICON =
     data && `https://cdn.weatherapi.com/weather/64x64/night/113.png`;
   const TEMPERATURE = data && `${Math.round(data.current.temp_c)}`;
-  // const MIN_TEMP =
-  // data && `${Math.round(data.forecast.forecastday[0].day.mintemp_c)}`;
-  // const MAX_TEMP =
-  // data && `${Math.round(data.forecast.forecastday[0].day.maxtemp_c)}`;
+
+  const NEXT_DAYS = data && data.forecast.forecastday.map((i) => i);
+
   const WIND_MS =
     data && `${Math.round(data?.current.wind_kph / 3.6) ?? ""} m/s`;
   const WIND_DIR = data && `${data?.current.wind_dir}`;
@@ -129,6 +133,24 @@ const App: FC = () => {
   const CONDITION_ICON =
     data &&
     data?.forecast.forecastday[0].hour.map((i) => `https:${i.condition.icon}`);
+
+  // const HOURLY_NEXT_DAYS =
+  //   data &&
+  //   data.forecast.forecastday.map((day) =>
+  //     day.hour.map((i) => i.time.split(" ")[1].split(":")[0])
+  //   );
+
+  // const HOURLY_NEXT_DAYS_TEMP =
+  //   data &&
+  //   data.forecast.forecastday.map((day) =>
+  //     day.hour.map((i) => Math.round(i.temp_c))
+  //   );
+
+  // const HOURLY_NEXT_DAYS_ICON =
+  //   data &&
+  //   data?.forecast.forecastday.map((day) =>
+  //     day.hour.map((i) => `https:${i.condition.icon}`)
+  //   );
 
   const sunsetConvertTo24Hours = () => {
     const timeSplitting =
@@ -210,6 +232,27 @@ const App: FC = () => {
             {CONDITION}
             <img src={ICON} alt="" />
           </div>
+          <div className="next-days">
+            <h2>Forecast</h2>
+            <ul>
+              {NEXT_DAYS?.map((i, index) => (
+                <a href={i.date}>
+                  <li key={index}>
+                    {!i.date.localeCompare(
+                      data?.location.localtime.split(" ")[0]
+                    )
+                      ? "Tomorrow"
+                      : i.date}
+                    <img src={i.day.condition.icon} alt="icon" />
+                    <div>
+                      <span>{Math.round(i.day.mintemp_c)}°</span> –
+                      <span>{Math.round(i.day.maxtemp_c)}°</span>
+                    </div>
+                  </li>
+                </a>
+              ))}
+            </ul>
+          </div>
           <div
             className="sunrise-sunset"
             style={
@@ -283,9 +326,9 @@ const App: FC = () => {
               ))}
             </div>
             <ul className="hourly">
-            {CONDITION_ICON?.map((i, index) => (
-              <img key={index} src={i} alt="" />
-            ))}
+              {CONDITION_ICON?.map((i, index) => (
+                <img key={index} src={i} alt="" />
+              ))}
             </ul>
             <ul className="hourly">
               {HOURLY?.map((i, index) => (

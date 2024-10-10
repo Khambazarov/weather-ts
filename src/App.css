@@ -28,7 +28,7 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 10rem 1fr repeat(3, 2rem) 10rem 3rem;
+  grid-template-rows: 10rem 1fr repeat(3, 2rem) 10rem 3rem 12rem;
   grid-template-areas:
     "condition"
     "sunrise-sunset"
@@ -36,7 +36,8 @@ body {
     "country"
     "local-time"
     "forecast"
-    "form";
+    "form"
+    "next-days";
   max-width: 768px;
 }
 
@@ -130,9 +131,9 @@ body {
             font-size: 1.5rem;
             position: absolute;
             top: -22px;
-            right: calc(50% - .75rem);
+            right: calc(50% - 0.75rem);
             bottom: auto;
-            left: calc(50% - .75rem);
+            left: calc(50% - 0.75rem);
           }
         }
 
@@ -229,5 +230,38 @@ body {
     letter-spacing: 2px;
     width: 30%;
     height: 3rem;
+  }
+}
+
+.next-days {
+  background-color: #111;
+
+  h2 {
+    margin: 0.5rem;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    
+    
+    li {
+      border-top: 1px solid firebrick;
+      list-style-type: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0.5rem 1rem;
+
+      img {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      div {
+        display: flex;
+        gap: 2rem;
+      }
+    }
   }
 }
