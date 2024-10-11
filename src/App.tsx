@@ -99,10 +99,10 @@ const App: FC = () => {
 
   const LOCATION = data?.location?.name;
   const LOCAL_TIME = data?.location.localtime.split(" ")[1];
-  const CONVERTED_TIME =
-    Number(data?.location.localtime.split(" ")[1].split(":")[0]) < 10
-      ? `0${LOCAL_TIME}`
-      : LOCAL_TIME;
+  // const CONVERTED_TIME =
+  //   Number(data?.location.localtime.split(" ")[1].split(":")[0]) < 10
+  //     ? LOCAL_TIME
+  //     : LOCAL_TIME
   const COUNTRY = data?.location.country;
   const CONDITION = data?.current.condition.text;
   const ICON = data && `https:${data?.current.condition.icon}`;
@@ -236,12 +236,12 @@ const App: FC = () => {
             <h2>Forecast</h2>
             <ul>
               {NEXT_DAYS?.map((i, index) => (
-                <a href={i.date}>
-                  <li key={index}>
+                <a key={index} href={i.date}>
+                  <li>
                     {!i.date.localeCompare(
                       data?.location.localtime.split(" ")[0]
                     )
-                      ? "Tomorrow"
+                      ? "Today"
                       : i.date}
                     <img src={i.day.condition.icon} alt="icon" />
                     <div>
@@ -316,7 +316,7 @@ const App: FC = () => {
           </div>
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
-          <span className="local-time">{CONVERTED_TIME}</span>
+          <span className="local-time">{LOCAL_TIME}</span>
           <div className="forecast">
             <div className="hourly">
               {HOURLY_TEMP?.map((i, index) => (
