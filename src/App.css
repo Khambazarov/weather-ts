@@ -177,6 +177,8 @@ body {
   grid-area: forecast;
   height: 10rem;
   overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 
   .hourly {
     list-style-type: none;
@@ -189,11 +191,13 @@ body {
       padding-block: 0.5rem;
       width: 3rem;
       font-size: 0.75rem;
+      scroll-snap-align: start;
     }
 
     img {
       border-right: 1px solid rgba(255, 255, 255, 1);
       width: 4.125rem;
+      scroll-snap-align: start;
     }
   }
 }
@@ -243,8 +247,6 @@ body {
   a {
     color: #fff;
     text-decoration: none;
-    
-    
     li {
       border-top: 1px solid firebrick;
       list-style-type: none;
@@ -252,6 +254,10 @@ body {
       align-items: center;
       justify-content: space-between;
       margin: 0.5rem 1rem;
+
+      .forecast-day {
+        width: 6rem;
+      }
 
       img {
         width: 2.5rem;

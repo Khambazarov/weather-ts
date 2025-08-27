@@ -62,6 +62,7 @@ const App: FC = () => {
   const [data, setData] = useState<WeatherData>();
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const forecastRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchData = async (city: string) => {
@@ -133,6 +134,22 @@ const App: FC = () => {
   const CONDITION_ICON =
     data &&
     data?.forecast.forecastday[0].hour.map((i) => `https:${i.condition.icon}`);
+
+  // Auto-scroll zum aktuellen Zeitpunkt
+  useEffect(() => {
+    if (data && forecastRef.current) {
+      const currentHour = Number(LOCAL_TIME?.split(":")[0]) || 0;
+      const hourWidth = 66; // Ungefähre Breite pro Stunde (66px)
+      const scrollPosition = currentHour * hourWidth;
+
+      setTimeout(() => {
+        forecastRef.current?.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+      }, 100);
+    }
+  }, [data, LOCAL_TIME]);
 
   // const HOURLY_NEXT_DAYS =
   //   data &&
@@ -235,22 +252,32 @@ const App: FC = () => {
           <div className="next-days">
             <h2>Forecast</h2>
             <ul>
-              {NEXT_DAYS?.map((i, index) => (
-                <a key={index} href={i.date}>
-                  <li>
-                    {!i.date.localeCompare(
-                      data?.location.localtime.split(" ")[0]
-                    )
-                      ? "Today"
-                      : i.date}
-                    <img src={i.day.condition.icon} alt="icon" />
-                    <div>
-                      <span>{Math.round(i.day.mintemp_c)}°</span> –
-                      <span>{Math.round(i.day.maxtemp_c)}°</span>
-                    </div>
-                  </li>
-                </a>
-              ))}
+              {NEXT_DAYS?.map((i, index) => {
+                const currentDate = data?.location.localtime.split(" ")[0];
+                const tomorrow = new Date(currentDate || "");
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const tomorrowStr = tomorrow.toISOString().split("T")[0];
+
+                let displayDate = i.date;
+                if (!i.date.localeCompare(currentDate || "")) {
+                  displayDate = "Today";
+                } else if (!i.date.localeCompare(tomorrowStr)) {
+                  displayDate = "Tomorrow";
+                }
+
+                return (
+                  <a key={index} href={i.date}>
+                    <li>
+                      <div className="forecast-day">{displayDate}</div>
+                      <img src={i.day.condition.icon} alt="icon" />
+                      <div>
+                        <span>{Math.round(i.day.mintemp_c)}°</span> –
+                        <span>{Math.round(i.day.maxtemp_c)}°</span>
+                      </div>
+                    </li>
+                  </a>
+                );
+              })}
             </ul>
           </div>
           <div
@@ -317,7 +344,7 @@ const App: FC = () => {
           <h1 className="location">{LOCATION}</h1>
           <h2 className="country">{COUNTRY}</h2>
           <span className="local-time">{LOCAL_TIME}</span>
-          <div className="forecast">
+          <div className="forecast" ref={forecastRef}>
             <div className="hourly">
               {HOURLY_TEMP?.map((i, index) => (
                 <li className="each-hour" key={index}>
