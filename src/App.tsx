@@ -254,15 +254,14 @@ const App: FC = () => {
             <ul>
               {NEXT_DAYS?.map((i, index) => {
                 const currentDate = data?.location.localtime.split(" ")[0];
-                const tomorrow = new Date(currentDate || "");
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                const tomorrowStr = tomorrow.toISOString().split("T")[0];
 
-                let displayDate = i.date;
+                let displayDate = i.date
                 if (!i.date.localeCompare(currentDate || "")) {
                   displayDate = "Today";
-                } else if (!i.date.localeCompare(tomorrowStr)) {
-                  displayDate = "Tomorrow";
+                } else {
+                  displayDate = new Date(i.date).toLocaleDateString("en-US", {
+                    weekday: "long",
+                  });
                 }
 
                 return (
