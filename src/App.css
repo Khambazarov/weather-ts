@@ -28,7 +28,7 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 18rem repeat(3, 2rem) 8rem 10rem 2.5rem;
+  grid-template-rows: 1fr 18rem repeat(3, 2rem) 8rem 9rem 2.5rem;
   grid-template-areas:
     "condition"
     "sunrise-sunset"
@@ -47,7 +47,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 2rem;
+  padding-top: 1rem;
 
   img {
     width: 5rem;
@@ -243,7 +243,7 @@ body {
 }
 
 .next-days {
-  padding-top: 0.5rem;
+  /* padding-top: 0.5rem; */
 
   @media screen and (min-width: 768px) {
     padding-top: 1rem;
