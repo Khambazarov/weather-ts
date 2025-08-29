@@ -28,7 +28,7 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 8rem 1fr repeat(3, 2rem) 8rem 12rem 2.5rem;
+  grid-template-rows: 8rem 1fr repeat(3, 2rem) 7rem 11.5rem 2.5rem;
   grid-template-areas:
     "condition"
     "sunrise-sunset"
@@ -190,7 +190,10 @@ body {
       padding-inline: 1.5rem;
       padding-block: 0.5rem;
       width: 2rem;
+      display: flex;
+      justify-content: center;
       font-size: 0.75rem;
+      
       scroll-snap-align: start;
     }
 

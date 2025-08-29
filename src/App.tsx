@@ -255,7 +255,7 @@ const App: FC = () => {
               {NEXT_DAYS?.map((i, index) => {
                 const currentDate = data?.location.localtime.split(" ")[0];
 
-                let displayDate = i.date
+                let displayDate = i.date;
                 if (!i.date.localeCompare(currentDate || "")) {
                   displayDate = "Today";
                 } else {
@@ -359,7 +359,7 @@ const App: FC = () => {
             <ul className="hourly">
               {HOURLY?.map((i, index) => (
                 <li className="each-hour" key={index}>
-                  {`${i}h`}
+                  {i === LOCAL_TIME?.split(":")[0] ? "NOW" : i + "h"}
                 </li>
               ))}
             </ul>
