@@ -28,7 +28,15 @@ body {
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 18rem repeat(3, 2rem) 8rem 9rem 2.5rem;
+  grid-template-rows:
+    minmax(5rem, 0.8fr) /* condition */
+    minmax(18rem, 18rem) /* sunrise-sunset */
+    minmax(2rem, 2rem) /* location */
+    minmax(1.5rem, 1.5rem) /* country */
+    minmax(1.5rem, 1.5rem) /* local-time */
+    minmax(7rem, 8rem) /* forecast */
+    minmax(9rem, 10rem) /* next-days */
+    minmax(2.5rem, 0.2fr); /* form */
   grid-template-areas:
     "condition"
     "sunrise-sunset"
