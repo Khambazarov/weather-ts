@@ -21,14 +21,14 @@ body {
 .container {
   min-height: 100vh;
   min-height: 100svh;
-  min-height: 100dvh;
+  /* min-height: 100dvh; */
   background-color: #000;
   font-weight: bold;
   text-align: center;
   display: grid;
   margin-inline: auto;
   grid-template-columns: 1fr;
-  grid-template-rows: 8rem 1fr repeat(3, 2rem) 7rem 11.5rem 2.5rem;
+  grid-template-rows: 6rem 1fr repeat(3, 2rem) 7rem 11.5rem 2.5rem;
   grid-template-areas:
     "condition"
     "sunrise-sunset"
