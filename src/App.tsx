@@ -139,7 +139,7 @@ const App: FC = () => {
   useEffect(() => {
     if (data && forecastRef.current) {
       const currentHour = Number(LOCAL_TIME?.split(":")[0]) || 0;
-      const hourWidth = 66; // Ungefähre Breite pro Stunde (66px)
+      const hourWidth = 50; // Breite pro Stunde (50px)
       const scrollPosition = currentHour * hourWidth;
 
       setTimeout(() => {
