@@ -358,8 +358,16 @@ const App: FC = () => {
             </ul>
             <ul className="hourly">
               {HOURLY?.map((i, index) => (
-                <li className="each-hour" key={index}>
-                  {i === LOCAL_TIME?.split(":")[0] ? "NOW" : i + "h"}
+                <li
+                  className="each-hour"
+                  key={index}
+                  style={
+                  i === LOCAL_TIME?.split(":")[0]
+                    ? { color: "firebrick", fontWeight: "bold" }
+                    : undefined
+                  }
+                >
+                  {i === LOCAL_TIME?.split(":")[0] ? "NOW" : `${i}h`}
                 </li>
               ))}
             </ul>
