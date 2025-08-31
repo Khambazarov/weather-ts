@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, FC } from "react";
 import { FiSunset, FiSunrise } from "react-icons/fi";
-// import { FaTemperatureHalf } from "react-icons/fa6";
-// import { WiHumidity, WiDirectionUp } from "react-icons/wi";
+import { FaTemperatureHalf } from "react-icons/fa6";
+import { WiHumidity, WiDirectionUp } from "react-icons/wi";
 import "./App.css";
 const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -308,10 +308,10 @@ const App: FC = () => {
               </div>
               <div className="local-temp">
                 <div className="temp-icons">
-                  <div className="temps">{TEMPERATURE}°</div>
-                  {/* <div className="icon-thermometer">
+                  <div className="icon-thermometer">
                     <FaTemperatureHalf />
-                  </div> */}
+                  </div>
+                  <div className="temps">{TEMPERATURE}°</div>
                 </div>
                 <div className="wind-speed-dir">
                   <div
@@ -320,18 +320,18 @@ const App: FC = () => {
                       rotate: `${windDirection}`,
                     }}
                   >
-                    {/* <span className="arrow-icon">
+                    <span className="arrow-icon">
                       <WiDirectionUp />
-                    </span> */}
+                    </span>
                   </div>
                   <div className="wind-speed">{WIND_MS}</div>
                   <div className="wind-dir">{WIND_DIR}</div>
                 </div>
                 <div className="air-humidity">
-                  <span>{HUMIDITY}%</span>
-                  {/* <span className="humidity-icon">
+                  <span>{HUMIDITY}</span>
+                  <span className="humidity-icon">
                     <WiHumidity />
-                  </span> */}
+                  </span>
                 </div>
               </div>
               <div className="sun-icons-wrapper">
@@ -362,9 +362,9 @@ const App: FC = () => {
                   className="each-hour"
                   key={index}
                   style={
-                  i === LOCAL_TIME?.split(":")[0]
-                    ? { color: "firebrick", fontWeight: "bold" }
-                    : undefined
+                    i === LOCAL_TIME?.split(":")[0]
+                      ? { color: "firebrick", fontWeight: "bold" }
+                      : undefined
                   }
                 >
                   {i === LOCAL_TIME?.split(":")[0] ? "NOW" : `${i}h`}

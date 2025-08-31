@@ -106,10 +106,11 @@ body {
       .temp-icons {
         display: flex;
         justify-content: center;
-        align-items: baseline;
+        /* align-items: baseline; */
 
         .icon-thermometer {
           color: rgba(255, 223, 25, 1);
+          font-size: 1rem;
         }
 
         .temps {
@@ -136,13 +137,15 @@ body {
           .arrow-icon {
             color: rgba(255, 223, 25, 1);
             border-top: 4px double rgba(255, 223, 25, 1);
-            border-radius: 33%;
-            font-size: 1.5rem;
+            border-radius: 50%;
+            font-size: 1.125rem;
             position: absolute;
-            top: -22px;
-            right: calc(50% - 0.75rem);
+            top: -18px;
+            right: calc(50% - 1.5rem);
             bottom: auto;
-            left: calc(50% - 0.75rem);
+            left: calc(50% - 1.5rem);
+
+            animation: wind linear 300 infinite alternate both;
           }
         }
 
@@ -157,7 +160,7 @@ body {
         justify-content: center;
 
         .humidity-icon {
-          font-size: 1.5rem;
+          font-size: 1.25rem;
           line-height: 1rem;
           color: rgba(255, 223, 25, 1);
         }
