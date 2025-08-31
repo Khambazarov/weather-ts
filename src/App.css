@@ -21,7 +21,7 @@ body {
 .container {
   min-height: 100vh;
   min-height: 100svh;
-  /* min-height: 100dvh; */
+  min-height: 100dvh;
   background-color: #000;
   font-weight: bold;
   text-align: center;
@@ -29,12 +29,12 @@ body {
   margin-inline: auto;
   grid-template-columns: 1fr;
   grid-template-rows:
-    minmax(5rem, 0.8fr) /* condition */
+    minmax(4rem, 0.5fr) /* condition */
     minmax(18rem, 18rem) /* sunrise-sunset */
     minmax(2rem, 2rem) /* location */
     minmax(1.5rem, 1.5rem) /* country */
     minmax(1.5rem, 1.5rem) /* local-time */
-    minmax(7rem, 8rem) /* forecast */
+    minmax(7rem, 7rem) /* forecast */
     minmax(9rem, 10rem) /* next-days */
     minmax(2.5rem, 0.2fr); /* form */
   grid-template-areas:
