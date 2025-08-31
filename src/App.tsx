@@ -313,7 +313,15 @@ const App: FC = () => {
                   </div>
                   <div className="temps">{TEMPERATURE}°</div>
                 </div>
-                <div className="wind-speed-dir">
+                <div
+                  className="wind-speed-dir"
+                  style={
+                    sunriseTimeConvertToNumber() < localTimeConvertToNumber() &&
+                    localTimeConvertToNumber() < sunsetTimeConvertToNumber()
+                      ? { borderColor: "rgba(255, 223, 25, 1)" }
+                      : { borderColor: "rgba(255, 255, 255, 0.7)" }
+                  }
+                >
                   <div
                     className="wind-direction-icon"
                     style={{

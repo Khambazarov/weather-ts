@@ -144,8 +144,6 @@ body {
             right: calc(50% - 1.5rem);
             bottom: auto;
             left: calc(50% - 1.5rem);
-
-            animation: wind linear 300 infinite alternate both;
           }
         }
 
